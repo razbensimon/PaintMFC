@@ -71,26 +71,6 @@ BEGIN_MESSAGE_MAP(CPaintMFCDlg, CDialogEx)
 	ON_WM_MOUSEMOVE()
 END_MESSAGE_MAP()
 
-	if (IsIconic())
-	{
-		CPaintDC dc(this); // device context for painting
-
-		SendMessage(WM_ICONERASEBKGND, reinterpret_cast<WPARAM>(dc.GetSafeHdc()), 0);
-
-		// Center icon in client rectangle
-		int cxIcon = GetSystemMetrics(SM_CXICON);
-		int cyIcon = GetSystemMetrics(SM_CYICON);
-		CRect rect;
-		GetClientRect(&rect);
-		int x = (rect.Width() - cxIcon + 1) / 2;
-		int y = (rect.Height() - cyIcon + 1) / 2;
-
-		// Draw the icon
-		dc.DrawIcon(x, y, m_hIcon);
-	}
-	else
-	{
-		InnerOnPaint();
 
 // CPaintMFCDlg message handlers
 
@@ -141,13 +121,34 @@ void CPaintMFCDlg::OnSysCommand(UINT nID, LPARAM lParam)
 	}
 }
 
+
 // If you add a minimize button to your dialog, you will need the code below
 //  to draw the icon.  For MFC applications using the document/view model,
 //  this is automatically done for you by the framework.
 
 void CPaintMFCDlg::OnPaint()
 {
-		CDialogEx::OnPaint();		
+	if (IsIconic())
+	{
+		CPaintDC dc(this); // device context for painting
+
+		SendMessage(WM_ICONERASEBKGND, reinterpret_cast<WPARAM>(dc.GetSafeHdc()), 0);
+
+		// Center icon in client rectangle
+		int cxIcon = GetSystemMetrics(SM_CXICON);
+		int cyIcon = GetSystemMetrics(SM_CYICON);
+		CRect rect;
+		GetClientRect(&rect);
+		int x = (rect.Width() - cxIcon + 1) / 2;
+		int y = (rect.Height() - cyIcon + 1) / 2;
+
+		// Draw the icon
+		dc.DrawIcon(x, y, m_hIcon);
+	}
+	else
+	{
+		this->InnerOnPaint();
+		CDialogEx::OnPaint();
 	}
 }
 
@@ -159,7 +160,18 @@ HCURSOR CPaintMFCDlg::OnQueryDragIcon()
 }
 
 
-// Our Code:
+/* #### Our CODE: ### */
+
+void CPaintMFCDlg::InnerOnPaint()
+{
+	CPaintDC context(this);
+	CPen old(PS_SOLID, _penWidth, _penColor);
+	CPen my_pen(PS_DOT, 1, _penColor);
+	CBrush Br_o(_penColor);
+	
+	for (int i = 0; i < _shapes.GetSize(); i++)
+		_shapes[i]->draw(&context);
+}
 
 
 void CPaintMFCDlg::OnMouseMove(UINT nFlags, CPoint point)
@@ -167,13 +179,10 @@ void CPaintMFCDlg::OnMouseMove(UINT nFlags, CPoint point)
 	if ((isPressed) && (ShapePressed == false) && (shapeMovingMode == false))
 	{
 		CClientDC dc(this);
-		//CBrush myBrush,*oldBrush;
-		//myBrush.CreateSolidBrush(curColor);
-		//oldBrush=dc.SelectObject( &myBrush );  
-		CPen myPen1(PS_SOLID, m_PenWidth, curColor);
+		CPen myPen1(PS_SOLID, _penWidth, _penColor);
 		CPen* oldPen;
 		oldPen = dc.SelectObject(&myPen1);
-		switch (ChosenShape)
+		switch (_chosenShape)
 		{
 		case RECTANGLE:
 			dc.SetROP2(R2_NOTXORPEN);
