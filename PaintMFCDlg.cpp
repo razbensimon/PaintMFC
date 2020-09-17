@@ -20,19 +20,19 @@ class CAboutDlg : public CDialogEx
 public:
 	CAboutDlg();
 
-// Dialog Data
+	// Dialog Data
 #ifdef AFX_DESIGN_TIME
 	enum { IDD = IDD_ABOUTBOX };
 #endif
 
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
 // Implementation
 protected:
 	DECLARE_MESSAGE_MAP()
 public:
-//	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
+	//	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 };
 
 CAboutDlg::CAboutDlg() : CDialogEx(IDD_ABOUTBOX)
@@ -45,7 +45,7 @@ void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CAboutDlg, CDialogEx)
-//	ON_WM_MOUSEMOVE()
+	//	ON_WM_MOUSEMOVE()
 END_MESSAGE_MAP()
 
 
@@ -69,6 +69,10 @@ BEGIN_MESSAGE_MAP(CPaintMFCDlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 	ON_WM_MOUSEMOVE()
+	ON_BN_CLICKED(BTN_RECT2, &CPaintMFCDlg::OnBnClickedRectangle)
+	ON_BN_CLICKED(BTN_ELLIPSE, &CPaintMFCDlg::OnBnClickedEllipse)
+	ON_WM_LBUTTONDOWN()
+	ON_WM_LBUTTONUP()
 END_MESSAGE_MAP()
 
 
@@ -168,28 +172,56 @@ void CPaintMFCDlg::InnerOnPaint()
 	CPen old(PS_SOLID, _penWidth, _penColor);
 	CPen my_pen(PS_DOT, 1, _penColor);
 	CBrush Br_o(_penColor);
-	
+
 	for (int i = 0; i < _shapes.GetSize(); i++)
 		_shapes[i]->draw(&context);
 }
 
 
+void CPaintMFCDlg::OnLButtonDown(UINT nFlags, CPoint point)
+{
+	// save start cursor point
+	endP = startP = point;
+	isMousePressed = true;
+
+	CDialogEx::OnLButtonDown(nFlags, point);
+}
+
+
+void CPaintMFCDlg::OnLButtonUp(UINT nFlags, CPoint point)
+{
+	// save end cursor point
+	endP = point;
+	isMousePressed = false;
+
+	// save the figure in data array
+
+	CDialogEx::OnLButtonUp(nFlags, point);
+}
+
+
 void CPaintMFCDlg::OnMouseMove(UINT nFlags, CPoint point)
 {
-	if ((isPressed) && (ShapePressed == false) && (shapeMovingMode == false))
+	if (!isMousePressed)
+		return;
+
+
+	if (drawMode == false)// && shapeMovingMode == false)
 	{
 		CClientDC dc(this);
-		CPen myPen1(PS_SOLID, _penWidth, _penColor);
+		CPen pen(PS_SOLID, _penWidth, _penColor);
 		CPen* oldPen;
-		oldPen = dc.SelectObject(&myPen1);
+		oldPen = dc.SelectObject(&pen);
+
 		switch (_chosenShape)
 		{
 		case RECTANGLE:
 			dc.SetROP2(R2_NOTXORPEN);
 			//dc.SelectStockObject(NULL_BRUSH);
 			dc.Rectangle(startP.x, startP.y, endP.x, endP.y);
-			endP = point;
-			dc.Rectangle(startP.x, startP.y, endP.x, endP.y);
+			
+			endP = point; // update
+			dc.Rectangle(startP.x, startP.y, endP.x, endP.y); // draw the new 
 			break;
 		case ELLIPSE:
 			dc.SetROP2(R2_NOTXORPEN);
@@ -199,10 +231,11 @@ void CPaintMFCDlg::OnMouseMove(UINT nFlags, CPoint point)
 			dc.Ellipse(startP.x, startP.y, endP.x, endP.y);
 			break;
 		}
+		
 		dc.SelectObject(oldPen);
 		dc.SetROP2(R2_COPYPEN);
 	}
-	else if ((isPressed) && (shapeMovingMode) && (ShapePressed))
+	/*else if ((isMousePressed) && (shapeMovingMode) && (drawMode))
 	{
 		RECT r;
 		int x, y;
@@ -211,18 +244,34 @@ void CPaintMFCDlg::OnMouseMove(UINT nFlags, CPoint point)
 		TLX = point;
 		x = (TLX.x - xx);
 		y = (TLX.y - yy);
-		_shapes[chosenFigure]->setx1(_shapes[chosenFigure]->getx1() + x);
-		_shapes[chosenFigure]->sety1(_shapes[chosenFigure]->gety1() + y);
-		_shapes[chosenFigure]->setx2(_shapes[chosenFigure]->getx2() + x);
-		_shapes[chosenFigure]->sety2(_shapes[chosenFigure]->gety2() + y);
-		r.left = min(sh[chosenFigure]->getx1(), sh[chosenFigure]->getx2()) - 50;
-		r.right = max(sh[chosenFigure]->getx1(), sh[chosenFigure]->getx2()) + 50;
-		r.top = min(sh[chosenFigure]->gety1(), sh[chosenFigure]->gety2()) - 50;
-		r.bottom = max(sh[chosenFigure]->gety1(), sh[chosenFigure]->gety2()) + 50;
+		_shapes[chosenFigure]->setX1(_shapes[chosenFigure]->getX1() + x);
+		_shapes[chosenFigure]->setY1(_shapes[chosenFigure]->getY1() + y);
+		_shapes[chosenFigure]->setX2(_shapes[chosenFigure]->getX2() + x);
+		_shapes[chosenFigure]->setY2(_shapes[chosenFigure]->getY2() + y);
+		r.left = min(_shapes[chosenFigure]->getX1(), _shapes[chosenFigure]->getX2()) - 50;
+		r.right = max(_shapes[chosenFigure]->getX1(), _shapes[chosenFigure]->getX2()) + 50;
+		r.top = min(_shapes[chosenFigure]->getY1(), _shapes[chosenFigure]->getY2()) - 50;
+		r.bottom = max(_shapes[chosenFigure]->getY1(), _shapes[chosenFigure]->getY2()) + 50;
 		InvalidateRect(&r);
+	}*/
 
-
-	}
-	
 	CDialogEx::OnMouseMove(nFlags, point);
+}
+
+
+void CPaintMFCDlg::OnBnClickedRectangle()
+{
+	_chosenShape = RECTANGLE;
+	isMousePressed = false;
+	drawMode = false;
+	shapeMovingMode = false;
+}
+
+
+void CPaintMFCDlg::OnBnClickedEllipse()
+{
+	_chosenShape = ELLIPSE;
+	isMousePressed = false;
+	drawMode = false;
+	shapeMovingMode = false;
 }
