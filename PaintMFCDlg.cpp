@@ -51,9 +51,6 @@ END_MESSAGE_MAP()
 
 
 // CPaintMFCDlg dialog
-
-
-
 CPaintMFCDlg::CPaintMFCDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_PAINTMFC_DIALOG, pParent)
 {
@@ -63,6 +60,9 @@ CPaintMFCDlg::CPaintMFCDlg(CWnd* pParent /*=nullptr*/)
 void CPaintMFCDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
+	DDX_Control(pDX, ID_BRDRCLR_CTRL, borderColorControl);
+	DDX_Control(pDX, ID_BRDRWGHT_CTRL, borderWeightControl);
+	DDX_Control(pDX, ID_FILLCLR_CTRL, fillColorControl);
 }
 
 BEGIN_MESSAGE_MAP(CPaintMFCDlg, CDialogEx)
@@ -75,6 +75,9 @@ BEGIN_MESSAGE_MAP(CPaintMFCDlg, CDialogEx)
 	ON_WM_LBUTTONDOWN()
 	ON_WM_LBUTTONUP()
 	ON_BN_CLICKED(BTN_ELLIPSE2, &CPaintMFCDlg::OnBnClickedTriangle)
+	ON_BN_CLICKED(ID_BRDRCLR_CTRL, &CPaintMFCDlg::OnBnClickedBrdrclrCtrl)
+	ON_CBN_SELCHANGE(ID_BRDRWGHT_CTRL, &CPaintMFCDlg::OnCbnSelchangeBrdrwghtCtrl)
+	ON_BN_CLICKED(ID_FILLCLR_CTRL, &CPaintMFCDlg::OnBnClickedFillclrCtrl)
 END_MESSAGE_MAP()
 
 
@@ -83,8 +86,6 @@ END_MESSAGE_MAP()
 BOOL CPaintMFCDlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
-
-	// Add "About..." menu item to system menu.
 
 	// IDM_ABOUTBOX must be in the system command range.
 	ASSERT((IDM_ABOUTBOX & 0xFFF0) == IDM_ABOUTBOX);
@@ -109,7 +110,7 @@ BOOL CPaintMFCDlg::OnInitDialog()
 	SetIcon(m_hIcon, TRUE);			// Set big icon
 	SetIcon(m_hIcon, FALSE);		// Set small icon
 
-	// TODO: Add extra initialization here
+	InnerInit();
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -168,20 +169,22 @@ HCURSOR CPaintMFCDlg::OnQueryDragIcon()
 
 /* #### Our CODE: ### */
 
+void CPaintMFCDlg::InnerInit() {
+
+	borderWeightControl.SetCurSel(0);  // Setting default border weight to 1
+	_penColor = RGB(0, 0, 0);
+	borderColorControl.SetColor(_penColor); // Setting default border color to Black
+	_fillColor = RGB(255, 255, 255);
+	fillColorControl.SetColor(_fillColor); // Setting default fill color to White
+}
+	
 void CPaintMFCDlg::InnerOnPaint()
 {
-	_penColor = RGB(255,0,0);
-	_penWidth = 5.0;
-	
 	CPaintDC context(this);
-	CPen old(PS_SOLID, _penWidth, _penColor);
-	CPen my_pen(PS_DOT, 1, _penColor);
-	CBrush Br_o(_penColor);
-	
+
 	for (int i = 0; i < _shapes.size(); i++)
 		_shapes[i]->draw(&context);
 }
-
 
 void CPaintMFCDlg::OnLButtonDown(UINT nFlags, CPoint point)
 {
@@ -189,7 +192,13 @@ void CPaintMFCDlg::OnLButtonDown(UINT nFlags, CPoint point)
 	_endP = _startP = point;
 	_isMousePressed = true;
 
-	_currentShapeDraw = ShapesFactory::createShape(_chosenShapeType, point.x, point.y, point.x, point.y, _penWidth, _penColor);
+	//CString chosenBorderWeight;
+	//borderWeightControl.GetWindowTextW(chosenBorderWeight);
+	//_penWidth = _wtof(chosenBorderWeight);
+	//_penColor = borderColorControl.GetColor();
+	//_fillColor = fillColorControl.GetColor();
+
+	_currentShapeDraw = ShapesFactory::createShape(_chosenShapeType, point.x, point.y, point.x, point.y, _penWidth, _penColor, _fillColor);
 
 	CDialogEx::OnLButtonDown(nFlags, point);
 }
@@ -280,4 +289,21 @@ void CPaintMFCDlg::OnBnClickedTriangle()
 	_isMousePressed = false;
 	_drawMode = false;
 	_shapeMovingMode = false;
+}
+
+void CPaintMFCDlg::OnBnClickedBrdrclrCtrl()
+{
+	_penColor = borderColorControl.GetColor();
+}
+
+void CPaintMFCDlg::OnCbnSelchangeBrdrwghtCtrl()
+{
+	CString tempWidth;
+	borderWeightControl.GetLBText(borderWeightControl.GetCurSel(), tempWidth);
+	_penWidth = _wtof(tempWidth);
+}
+
+void CPaintMFCDlg::OnBnClickedFillclrCtrl()
+{
+	_fillColor = fillColorControl.GetColor();
 }

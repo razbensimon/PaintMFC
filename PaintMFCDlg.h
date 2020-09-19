@@ -72,14 +72,21 @@ protected:
 	void OnPaint();
 	afx_msg HCURSOR OnQueryDragIcon();
 	DECLARE_MESSAGE_MAP()
-public:
-	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
+
+	CMFCColorButton borderColorControl;
+	CComboBox borderWeightControl;
+	CMFCColorButton fillColorControl;
 private:
 	void InnerOnPaint();
+	void InnerInit();
 public:
 	afx_msg void OnBnClickedRectangle();
 	afx_msg void OnBnClickedEllipse();
+	afx_msg void OnBnClickedTriangle();
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
-	afx_msg void OnBnClickedTriangle();
+	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
+	afx_msg void OnBnClickedBrdrclrCtrl();
+	afx_msg void OnCbnSelchangeBrdrwghtCtrl();
+	afx_msg void OnBnClickedFillclrCtrl();
 };

@@ -4,10 +4,11 @@
 void Polygon::draw(CDC* displayContext) const
 {
 	CPen pen(PS_SOLID, getPenWidth(), getColor());
-	CPen* oldPen = displayContext->SelectObject(&pen);
+	displayContext->SelectObject(&pen);
+	CBrush brush(getFillColor());
+	displayContext->SelectObject(&brush);
 
 	displayContext->Polygon(getPoints(), getPointsNumber());
-	displayContext->SelectObject(oldPen);
 }
 
 void Polygon::setX1(int x1)

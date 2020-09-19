@@ -8,16 +8,16 @@
 
 using namespace shapes;
 
-Figure* ShapesFactory::createShape(FIGURES figureType, int x1, int y1, int x2, int y2, double penWidth, COLORREF color)
+Figure* ShapesFactory::createShape(FIGURES figureType, int x1, int y1, int x2, int y2, double penWidth, COLORREF color, COLORREF fillColor)
 {
 	switch (figureType)
 	{
 	default:
 	case RECTANGLE:
-		return new shapes::Rectangle(x1, y1, x2, y2, penWidth, color);
+		return new shapes::Rectangle(x1, y1, x2, y2, penWidth, color, fillColor);
 	case ELLIPSE:
-		return new shapes::Ellipse(x1, y1, x2, y2, penWidth, color);
+		return new shapes::Ellipse(x1, y1, x2, y2, penWidth, color, fillColor);
 	case TRIANGLE:
-		return new Triangle(x1, y1, x2, y2, penWidth, color);
+		return new Triangle(x1, y1, x2, y2, penWidth, color, fillColor);
 	}
 }

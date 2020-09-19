@@ -12,8 +12,8 @@ namespace  shapes
 		POINT* _points;
 		int _pointsNumber;
 		
-		Polygon(int x1, int y1, int x2, int y2, double penWidth, COLORREF color)
-			: Figure(x1, y1, x2, y2, penWidth, color), _points(NULL), _pointsNumber(0)
+		Polygon(int x1, int y1, int x2, int y2, double penWidth, COLORREF color, COLORREF fillColor)
+			: Figure(x1, y1, x2, y2, penWidth, color, fillColor), _points(NULL), _pointsNumber(0)
 		{	
 		}		
 	public:
