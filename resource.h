@@ -10,8 +10,9 @@
 #define IDR_TOOLBAR1                    129
 #define BTN_RECT2                       1001
 #define IDC_BUTTON2                     1002
-#define BTN_RECT3                       1002
 #define BTN_ELLIPSE                     1002
+#define BTN_ELLIPSE2                    1003
+#define BTN_TRIANGLE                    1003
 
 // Next default values for new objects
 // 

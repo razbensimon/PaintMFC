@@ -7,6 +7,7 @@
 #include "PaintMFC.h"
 #include "PaintMFCDlg.h"
 #include "afxdialogex.h"
+#include "ShapesFactory.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -73,6 +74,7 @@ BEGIN_MESSAGE_MAP(CPaintMFCDlg, CDialogEx)
 	ON_BN_CLICKED(BTN_ELLIPSE, &CPaintMFCDlg::OnBnClickedEllipse)
 	ON_WM_LBUTTONDOWN()
 	ON_WM_LBUTTONUP()
+	ON_BN_CLICKED(BTN_ELLIPSE2, &CPaintMFCDlg::OnBnClickedTriangle)
 END_MESSAGE_MAP()
 
 
@@ -168,11 +170,10 @@ HCURSOR CPaintMFCDlg::OnQueryDragIcon()
 
 void CPaintMFCDlg::InnerOnPaint()
 {
+	_penColor = RGB(255,0,0);
+	_penWidth = 5.0;
+	
 	CPaintDC context(this);
-	CPen old(PS_SOLID, _penWidth, _penColor);
-	CPen my_pen(PS_DOT, 1, _penColor);
-	CBrush Br_o(_penColor);
-
 	for (int i = 0; i < _shapes.GetSize(); i++)
 		_shapes[i]->draw(&context);
 }
@@ -181,8 +182,10 @@ void CPaintMFCDlg::InnerOnPaint()
 void CPaintMFCDlg::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	// save start cursor point
-	endP = startP = point;
-	isMousePressed = true;
+	_endP = _startP = point;
+	_isMousePressed = true;
+
+	_currentShapeDraw = ShapesFactory::createShape(_chosenShapeType, point.x, point.y, point.x, point.y, _penWidth, _penColor);
 
 	CDialogEx::OnLButtonDown(nFlags, point);
 }
@@ -191,8 +194,8 @@ void CPaintMFCDlg::OnLButtonDown(UINT nFlags, CPoint point)
 void CPaintMFCDlg::OnLButtonUp(UINT nFlags, CPoint point)
 {
 	// save end cursor point
-	endP = point;
-	isMousePressed = false;
+	_endP = point;
+	_isMousePressed = false;
 
 	// save the figure in data array
 
@@ -202,48 +205,56 @@ void CPaintMFCDlg::OnLButtonUp(UINT nFlags, CPoint point)
 
 void CPaintMFCDlg::OnMouseMove(UINT nFlags, CPoint point)
 {
-	if (!isMousePressed)
+	if (!_isMousePressed)
 		return;
 
 
-	if (drawMode == false)// && shapeMovingMode == false)
+	if (_drawMode == false)// && _shapeMovingMode == false)
 	{
 		CClientDC dc(this);
 		CPen pen(PS_SOLID, _penWidth, _penColor);
 		CPen* oldPen;
 		oldPen = dc.SelectObject(&pen);
 
-		switch (_chosenShape)
+		dc.SetROP2(R2_NOTXORPEN);
+		_currentShapeDraw->draw(&dc);
+
+		switch (_chosenShapeType)
 		{
-		case RECTANGLE:
-			dc.SetROP2(R2_NOTXORPEN);
-			//dc.SelectStockObject(NULL_BRUSH);
-			dc.Rectangle(startP.x, startP.y, endP.x, endP.y);
-			
-			endP = point; // update
-			dc.Rectangle(startP.x, startP.y, endP.x, endP.y); // draw the new 
+		case RECTANGLE:			
+			_endP = point; // update
+			_currentShapeDraw->setX2(point.x);
+			_currentShapeDraw->setY2(point.y);
+			_currentShapeDraw->draw(&dc);			
 			break;
-		case ELLIPSE:
-			dc.SetROP2(R2_NOTXORPEN);
-			//dc.SelectStockObject(NULL_BRUSH);
-			dc.Ellipse(startP.x, startP.y, endP.x, endP.y);
-			endP = point;
-			dc.Ellipse(startP.x, startP.y, endP.x, endP.y);
+		case TRIANGLE:
+			_endP = point; // update
+			_currentShapeDraw->setX2(point.x);
+			_currentShapeDraw->setY2(point.y);
+			_currentShapeDraw->draw(&dc);
 			break;
+		//case ELLIPSE:
+		//	dc.SetROP2(R2_NOTXORPEN);
+		//	//dc.SelectStockObject(NULL_BRUSH);s
+		//	dc.Ellipse(_startP.x, _startP.y, _endP.x, _endP.y);
+		//	_endP = point;
+		//	dc.Ellipse(_startP.x, _startP.y, _endP.x, _endP.y);
+		//	
+		//	break;
 		}
 		
 		dc.SelectObject(oldPen);
 		dc.SetROP2(R2_COPYPEN);
 	}
-	/*else if ((isMousePressed) && (shapeMovingMode) && (drawMode))
+	/*else if ((_isMousePressed) && (_shapeMovingMode) && (_drawMode))
 	{
 		RECT r;
 		int x, y;
 		int xx, yy;
-		xx = TLX.x, yy = TLX.y;
-		TLX = point;
-		x = (TLX.x - xx);
-		y = (TLX.y - yy);
+		xx = _TLX.x, yy = _TLX.y;
+		_TLX = point;
+		x = (_TLX.x - xx);
+		y = (_TLX.y - yy);
 		_shapes[chosenFigure]->setX1(_shapes[chosenFigure]->getX1() + x);
 		_shapes[chosenFigure]->setY1(_shapes[chosenFigure]->getY1() + y);
 		_shapes[chosenFigure]->setX2(_shapes[chosenFigure]->getX2() + x);
@@ -261,17 +272,25 @@ void CPaintMFCDlg::OnMouseMove(UINT nFlags, CPoint point)
 
 void CPaintMFCDlg::OnBnClickedRectangle()
 {
-	_chosenShape = RECTANGLE;
-	isMousePressed = false;
-	drawMode = false;
-	shapeMovingMode = false;
+	_chosenShapeType = RECTANGLE;
+	_isMousePressed = false;
+	_drawMode = false;
+	_shapeMovingMode = false;
 }
 
 
 void CPaintMFCDlg::OnBnClickedEllipse()
 {
-	_chosenShape = ELLIPSE;
-	isMousePressed = false;
-	drawMode = false;
-	shapeMovingMode = false;
+	_chosenShapeType = ELLIPSE;
+	_isMousePressed = false;
+	_drawMode = false;
+	_shapeMovingMode = false;
+}
+
+void CPaintMFCDlg::OnBnClickedTriangle()
+{
+	_chosenShapeType = TRIANGLE;
+	_isMousePressed = false;
+	_drawMode = false;
+	_shapeMovingMode = false;
 }

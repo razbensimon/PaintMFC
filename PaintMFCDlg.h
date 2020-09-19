@@ -4,7 +4,9 @@
 
 #pragma once
 #include "Figure.h"
+#include "FIGURES.h"
 
+using namespace shapes;
 
 // CPaintMFCDlg dialog
 class CPaintMFCDlg : public CDialogEx
@@ -20,25 +22,25 @@ private:
 /*For painting....*/
 	int _penWidth;
 	COLORREF _penColor;
-	enum FIGURES { RECTANGLE = 0, ELLIPSE };
-	FIGURES _chosenShape;
+	FIGURES _chosenShapeType;
+	Figure* _currentShapeDraw;
 	//int chosenFigure;
 
 	CTypedPtrArray< CObArray, Figure*> _shapes;
 	CTypedPtrArray< CObArray, Figure*> _tempShapes; // for Undo & Redo
 /*Boolian*/
 
-	bool isMousePressed = false;
-	bool shapeMovingMode;
-	bool drawMode; // checking if i'm still on shape
+	bool _isMousePressed = false;
+	bool _shapeMovingMode;
+	bool _drawMode; // checking if i'm still on shape
 	//bool ShapeType1;
 	//bool ShapeType2;
 	//bool ShapeType3;
 
 	/*Points*/
-	CPoint startP;
-	CPoint endP;
-	CPoint TLX; //TOP LEFT Point,for Proportion to moving
+	CPoint _startP;
+	CPoint _endP;
+	CPoint _TLX; //TOP LEFT Point,for Proportion to moving
 
 
 	/* MFC Generated Code: */
@@ -74,4 +76,5 @@ public:
 	afx_msg void OnBnClickedEllipse();
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
+	afx_msg void OnBnClickedTriangle();
 };

@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "Rectangle.h"
 
+using namespace shapes;
+
 void Rectangle::draw(CDC* displayContext) const
 {
 	CPen pen(PS_SOLID, getPenWidth(), getColor());
