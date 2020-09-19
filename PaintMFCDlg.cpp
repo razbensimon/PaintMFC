@@ -170,9 +170,9 @@ HCURSOR CPaintMFCDlg::OnQueryDragIcon()
 
 void CPaintMFCDlg::InnerOnPaint()
 {
-	_penColor = RGB(255,0,0);
+	_penColor = RGB(255, 0, 0);
 	_penWidth = 5.0;
-	
+
 	CPaintDC context(this);
 	for (int i = 0; i < _shapes.GetSize(); i++)
 		_shapes[i]->draw(&context);
@@ -219,29 +219,10 @@ void CPaintMFCDlg::OnMouseMove(UINT nFlags, CPoint point)
 		dc.SetROP2(R2_NOTXORPEN);
 		_currentShapeDraw->draw(&dc);
 
-		switch (_chosenShapeType)
-		{
-		case RECTANGLE:			
-			_endP = point; // update
-			_currentShapeDraw->setX2(point.x);
-			_currentShapeDraw->setY2(point.y);
-			_currentShapeDraw->draw(&dc);			
-			break;
-		case TRIANGLE:
-			_endP = point; // update
-			_currentShapeDraw->setX2(point.x);
-			_currentShapeDraw->setY2(point.y);
-			_currentShapeDraw->draw(&dc);
-			break;
-		//case ELLIPSE:
-		//	dc.SetROP2(R2_NOTXORPEN);
-		//	//dc.SelectStockObject(NULL_BRUSH);s
-		//	dc.Ellipse(_startP.x, _startP.y, _endP.x, _endP.y);
-		//	_endP = point;
-		//	dc.Ellipse(_startP.x, _startP.y, _endP.x, _endP.y);
-		//	
-		//	break;
-		}
+		_endP = point; // update to the new end point
+		_currentShapeDraw->setX2(point.x);
+		_currentShapeDraw->setY2(point.y);
+		_currentShapeDraw->draw(&dc);
 		
 		dc.SelectObject(oldPen);
 		dc.SetROP2(R2_COPYPEN);

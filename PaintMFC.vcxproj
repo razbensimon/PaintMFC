@@ -184,6 +184,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Color.h" />
+    <ClInclude Include="Ellipse.h" />
     <ClInclude Include="Figure.h" />
     <ClInclude Include="FIGURES.h" />
     <ClInclude Include="framework.h" />
@@ -198,8 +199,7 @@
     <ClInclude Include="Triangle.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Figure.cpp" />
-    <ClCompile Include="FIGURES.cpp" />
+    <ClCompile Include="Ellipse.cpp" />
     <ClCompile Include="PaintMFC.cpp" />
     <ClCompile Include="PaintMFCDlg.cpp" />
     <ClCompile Include="pch.cpp">
