@@ -174,6 +174,10 @@ void CPaintMFCDlg::InnerOnPaint()
 	_penWidth = 5.0;
 
 	CPaintDC context(this);
+	CPen old(PS_SOLID, _penWidth, _penColor);
+	CPen my_pen(PS_DOT, 1, _penColor);
+	CBrush Br_o(_penColor);
+	
 	for (int i = 0; i < _shapes.GetSize(); i++)
 		_shapes[i]->draw(&context);
 }
@@ -198,7 +202,9 @@ void CPaintMFCDlg::OnLButtonUp(UINT nFlags, CPoint point)
 	_isMousePressed = false;
 
 	// save the figure in data array
-
+	_shapes.Add(_currentShapeDraw);
+	
+	Invalidate();
 	CDialogEx::OnLButtonUp(nFlags, point);
 }
 

@@ -1,6 +1,7 @@
 #pragma once
 
-const COLORREF BLACK = 0x00000000;
+const COLORREF BLACK = RGB(0,0,0);
+const COLORREF WHITE = RGB(255,255,255);
 
 namespace shapes
 {
@@ -13,15 +14,17 @@ namespace shapes
 		int _y2;
 		double _penWidth;
 		COLORREF _penColor;
+		COLORREF _fillColor;
 	public:
 		virtual ~Figure() {}
-		Figure(int x1, int y1, int x2, int y2, double penWidth = 10.0, COLORREF color = BLACK) {
+		Figure(int x1, int y1, int x2, int y2, double penWidth = 10.0, COLORREF color = BLACK, COLORREF fillColor = WHITE) {
 			this->_x1 = x1;
 			this->_y1 = y1;
 			this->_x2 = x2;
 			this->_y2 = y2;
 			this->_penWidth = penWidth;
 			this->_penColor = color;
+			this->_fillColor = fillColor;
 		}
 
 		Figure() : Figure(0, 0, 0, 0)
@@ -37,10 +40,14 @@ namespace shapes
 		virtual void setX2(int x2) { this->_x2 = x2; }
 		virtual void setY2(int y2) { this->_y2 = y2; }
 
-		COLORREF getColor() const { return this->_penColor; }
 		double getPenWidth() const { return this->_penWidth; }
-		void setColor(COLORREF color) { this->_penColor = color; }
 		void setPenWidth(double width) { this->_penWidth = width; }
+
+		COLORREF getColor() const { return this->_penColor; }
+		void setColor(COLORREF color) { this->_penColor = color; }
+
+		COLORREF getFillColor() const { return this->_fillColor; }
+		void setFillColor(COLORREF color) { this->_fillColor = color; }		
 
 		virtual void draw(CDC* displayContext) const = 0;
 	};

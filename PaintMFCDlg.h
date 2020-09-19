@@ -22,6 +22,7 @@ private:
 /*For painting....*/
 	int _penWidth;
 	COLORREF _penColor;
+	COLORREF _fillColor;
 	FIGURES _chosenShapeType;
 	Figure* _currentShapeDraw;
 	//int chosenFigure;
