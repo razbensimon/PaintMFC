@@ -7,7 +7,6 @@ namespace shapes
 	class Figure
 	{
 	protected:
-		int _figureType;
 		int _x1;
 		int _y1;
 		int _x2;
@@ -15,7 +14,7 @@ namespace shapes
 		double _penWidth;
 		COLORREF _penColor;
 	public:
-		virtual ~Figure() {};
+		virtual ~Figure() {}
 		Figure(int x1, int y1, int x2, int y2, double penWidth = 10.0, COLORREF color = BLACK) {
 			this->_x1 = x1;
 			this->_y1 = y1;
