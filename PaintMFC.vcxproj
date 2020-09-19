@@ -200,6 +200,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Ellipse.cpp" />
+    <ClCompile Include="Figure.cpp" />
+    <ClCompile Include="FIGURES.cpp" />
     <ClCompile Include="PaintMFC.cpp" />
     <ClCompile Include="PaintMFCDlg.cpp" />
     <ClCompile Include="pch.cpp">

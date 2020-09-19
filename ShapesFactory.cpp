@@ -3,8 +3,8 @@
 #include "FIGURES.h"
 #include "Figure.h"
 #include "Rectangle.h"
-#include "Triangle.h"
 #include "Ellipse.h"
+#include "Triangle.h"
 
 using namespace shapes;
 
@@ -12,6 +12,7 @@ Figure* ShapesFactory::createShape(FIGURES figureType, int x1, int y1, int x2, i
 {
 	switch (figureType)
 	{
+	default:
 	case RECTANGLE:
 		return new shapes::Rectangle(x1, y1, x2, y2, penWidth, color);
 	case ELLIPSE:

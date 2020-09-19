@@ -170,15 +170,15 @@ HCURSOR CPaintMFCDlg::OnQueryDragIcon()
 
 void CPaintMFCDlg::InnerOnPaint()
 {
-	_penColor = RGB(255, 0, 0);
+	_penColor = RGB(255,0,0);
 	_penWidth = 5.0;
-
+	
 	CPaintDC context(this);
 	CPen old(PS_SOLID, _penWidth, _penColor);
 	CPen my_pen(PS_DOT, 1, _penColor);
 	CBrush Br_o(_penColor);
 	
-	for (int i = 0; i < _shapes.GetSize(); i++)
+	for (int i = 0; i < _shapes.size(); i++)
 		_shapes[i]->draw(&context);
 }
 
@@ -202,7 +202,7 @@ void CPaintMFCDlg::OnLButtonUp(UINT nFlags, CPoint point)
 	_isMousePressed = false;
 
 	// save the figure in data array
-	_shapes.Add(_currentShapeDraw);
+	_shapes.push_back(_currentShapeDraw);
 	
 	Invalidate();
 	CDialogEx::OnLButtonUp(nFlags, point);
@@ -225,11 +225,11 @@ void CPaintMFCDlg::OnMouseMove(UINT nFlags, CPoint point)
 		dc.SetROP2(R2_NOTXORPEN);
 		_currentShapeDraw->draw(&dc);
 
-		_endP = point; // update to the new end point
+		_endP = point; // update
 		_currentShapeDraw->setX2(point.x);
 		_currentShapeDraw->setY2(point.y);
 		_currentShapeDraw->draw(&dc);
-		
+				
 		dc.SelectObject(oldPen);
 		dc.SetROP2(R2_COPYPEN);
 	}

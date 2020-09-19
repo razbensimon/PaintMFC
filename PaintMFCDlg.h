@@ -3,10 +3,13 @@
 //
 
 #pragma once
+#include <vector>
+
 #include "Figure.h"
 #include "FIGURES.h"
 
 using namespace shapes;
+using namespace std;
 
 // CPaintMFCDlg dialog
 class CPaintMFCDlg : public CDialogEx
@@ -20,15 +23,16 @@ private:
 	//CEdit test;			//For tasting only,need to remove
 
 /*For painting....*/
-	int _penWidth;
+	double _penWidth;
 	COLORREF _penColor;
 	COLORREF _fillColor;
 	FIGURES _chosenShapeType;
 	Figure* _currentShapeDraw;
 	//int chosenFigure;
 
-	CTypedPtrArray< CObArray, Figure*> _shapes;
-	CTypedPtrArray< CObArray, Figure*> _tempShapes; // for Undo & Redo
+	vector<Figure*> _shapes;
+//	CTypedPtrArray< CObArray, Figure*> _shapes;
+	//CTypedPtrArray< CObArray, Figure*> _tempShapes; // for Undo & Redo
 /*Boolian*/
 
 	bool _isMousePressed = false;
