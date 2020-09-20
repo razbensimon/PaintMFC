@@ -4,6 +4,7 @@
 #include "Figure.h"
 #include "Rectangle.h"
 #include "Ellipse.h"
+#include "Hexagon.h"
 #include "Triangle.h"
 #include "Line.h"
 
@@ -22,6 +23,8 @@ Figure* ShapesFactory::createShape(FIGURES figureType, int x1, int y1, int x2, i
 		return new Triangle(x1, y1, x2, y2, penWidth, color, fillColor);
 	case FIGURES::LINE:
 		return new Line(x1, y1, x2, y2, penWidth, color);
+	case FIGURES::HEXAGON:
+		return new Hexagon(x1, y1, x2, y2, penWidth, color, fillColor);
 	}
 }
 

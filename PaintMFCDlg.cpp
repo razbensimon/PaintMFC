@@ -251,7 +251,6 @@ void CPaintMFCDlg::OnLButtonDown(UINT nFlags, CPoint point)
 	CDialogEx::OnLButtonDown(nFlags, point);
 }
 
-
 void CPaintMFCDlg::OnLButtonUp(UINT nFlags, CPoint point)
 {
 	// save end cursor point
@@ -267,7 +266,6 @@ void CPaintMFCDlg::OnLButtonUp(UINT nFlags, CPoint point)
 	Invalidate();
 	CDialogEx::OnLButtonUp(nFlags, point);
 }
-
 
 void CPaintMFCDlg::OnMouseMove(UINT nFlags, CPoint point)
 {
@@ -316,14 +314,12 @@ void CPaintMFCDlg::OnMouseMove(UINT nFlags, CPoint point)
 	CDialogEx::OnMouseMove(nFlags, point);
 }
 
-
 void CPaintMFCDlg::OnChooseRectangleClicked()
 {
 	_drawMode = PAINT_TOOL::DRAW;
 	_chosenShapeType = FIGURES::RECTANGLE;
 	_isMousePressed = false;
 }
-
 
 void CPaintMFCDlg::OnChooseEllipseClicked()
 {
@@ -370,7 +366,6 @@ void CPaintMFCDlg::OnFillColorChanged()
 	_fillColor = fillColorControl.GetColor();
 }
 
-
 const string STATE_FILE_NAME = "savedState.json";
 
 void CPaintMFCDlg::OnSaveClicked()
@@ -384,7 +379,6 @@ void CPaintMFCDlg::OnSaveClicked()
 	o << std::setw(4) << figuresAsJsons << std::endl; // write pretty json to the file
 	o.close();
 }
-
 
 void CPaintMFCDlg::OnLoadClicked()
 {
@@ -426,7 +420,6 @@ void CPaintMFCDlg::OnBnClickedRedo()
 		Invalidate();
 	}
 }
-
 
 void CPaintMFCDlg::OnBnClickedUndo()
 {
