@@ -35,3 +35,7 @@ Debug/
 *.exe
 *.out
 *.app
+
+*.json
+
+PaintMFC.aps
