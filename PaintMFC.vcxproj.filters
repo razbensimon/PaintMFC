@@ -152,5 +152,8 @@
     <Image Include="res\hexagon.bmp">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="res\remove.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

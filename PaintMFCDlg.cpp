@@ -200,6 +200,7 @@ void CPaintMFCDlg::InnerInit() {
 	CBitmap triangleBmp;
 	CBitmap hexagonBmp;
 	CBitmap lineBmp;
+	CBitmap removeBmp;
 	CButton* shapeButton;
 
 	// Setting rectangle button
@@ -231,6 +232,12 @@ void CPaintMFCDlg::InnerInit() {
 	shapeButton = (CButton*)GetDlgItem(BTN_LINE);
 	shapeButton->ModifyStyle(0, BS_BITMAP);
 	shapeButton->SetBitmap(lineBmp);
+
+	// Setting remove button
+	removeBmp.LoadBitmap(IDB_REMOVE_TOOL);
+	shapeButton = (CButton*)GetDlgItem(BTN_REMOVE);
+	shapeButton->ModifyStyle(0, BS_BITMAP);
+	shapeButton->SetBitmap(removeBmp);
 }
 
 void CPaintMFCDlg::InnerOnPaint()

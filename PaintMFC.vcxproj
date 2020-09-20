@@ -238,6 +238,7 @@
     <Image Include="res\rect.bmp" />
     <Image Include="res\rectangle.ico" />
     <Image Include="res\rectangle.png" />
+    <Image Include="res\remove.bmp" />
     <Image Include="res\triangle.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
