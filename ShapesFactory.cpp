@@ -25,7 +25,7 @@ Figure* ShapesFactory::createShape(FIGURES figureType, int x1, int y1, int x2, i
 	}
 }
 
-Figure* ShapesFactory::createShape(json figure)
+Figure* ShapesFactory::createShape(json figure) // Deserialize
 {
 	const auto type = figure["type"].get<FIGURES>();
 	const auto x1 = figure["x1"].get<int>();
