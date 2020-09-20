@@ -184,7 +184,7 @@ void CPaintMFCDlg::InnerInit() {
 	_fillColor = RGB(255, 255, 255);
 	fillColorControl.SetColor(_fillColor); // Setting default fill color to White
 }
-	
+
 void CPaintMFCDlg::InnerOnPaint()
 {
 	CPaintDC context(this);
@@ -219,7 +219,7 @@ void CPaintMFCDlg::OnLButtonUp(UINT nFlags, CPoint point)
 
 	// save the figure in data array
 	_shapes.push_back(_currentShapeDraw);
-	
+
 	Invalidate();
 	CDialogEx::OnLButtonUp(nFlags, point);
 }
@@ -230,7 +230,7 @@ void CPaintMFCDlg::OnMouseMove(UINT nFlags, CPoint point)
 	if (!_isMousePressed)
 		return;
 
-	
+
 	if (_drawMode == false)// && _shapeMovingMode == false)
 	{
 		CClientDC dc(this);
@@ -245,7 +245,7 @@ void CPaintMFCDlg::OnMouseMove(UINT nFlags, CPoint point)
 		_currentShapeDraw->setX2(point.x);
 		_currentShapeDraw->setY2(point.y);
 		_currentShapeDraw->draw(&dc);
-				
+
 		dc.SelectObject(oldPen);
 		dc.SetROP2(R2_COPYPEN);
 	}
@@ -316,25 +316,39 @@ void CPaintMFCDlg::OnBnClickedFillclrCtrl()
 }
 
 
+const string STATE_FILE_NAME = "savedState.json";
+
 void CPaintMFCDlg::OnSaveClicked()
 {
-	json figureJson = _currentShapeDraw->toJson();
-	//auto st = figureJson.dump(4); // pretty print
+	vector<json> figuresAsJsons(_shapes.size());
+	std::transform(_shapes.begin(), _shapes.end(),
+		figuresAsJsons.begin(), [](Figure* figure) -> json { return figure->toJson(); });
 
-	ofstream o("savedState.json");
-	o << std::setw(4) << figureJson << std::endl;
+	std::remove(STATE_FILE_NAME.c_str());
+	ofstream o(STATE_FILE_NAME);
+	o << std::setw(4) << figuresAsJsons << std::endl; // write pretty json to the file
+	o.close();
 }
 
 
 void CPaintMFCDlg::OnLoadClicked()
 {
-	//json figureJson = _currentShapeDraw->toJson();
-	ifstream i("savedState.json");
-	json figureJson;
-	i >> figureJson;
-	auto figure = ShapesFactory::createShape(figureJson);
+	ifstream file(STATE_FILE_NAME);
+	if (!file) {
+		return; // there is no save state file
+	}
+
+	json figuresArrJson;
+	file >> figuresArrJson;
+	file.close();
+
+	if (figuresArrJson.empty())
+		return; // don't load on nothing	
 
 	_shapes.clear();
-	_shapes.push_back(figure);
+	for (json const& figureJson : figuresArrJson) {
+		Figure* figure = ShapesFactory::createShape(figureJson);
+		_shapes.push_back(figure);
+	}
 	Invalidate();
 }
