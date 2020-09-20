@@ -7,6 +7,7 @@
 
 #include "Figure.h"
 #include "FIGURES.h"
+#include "PAINT_TOOL.h"
 
 using namespace shapes;
 using namespace std;
@@ -24,9 +25,8 @@ private:
 
 	vector<Figure*> _shapes;
 
-	bool _isMousePressed = false;
-	bool _shapeMovingMode;
-	bool _drawMode;
+	bool _isMousePressed;
+	PAINT_TOOL _drawMode;
 	
 	CPoint _startP;
 	CPoint _endP;
@@ -65,15 +65,15 @@ private:
 	void InnerOnPaint();
 	void InnerInit();
 public:
-	afx_msg void OnBnClickedRectangle();
-	afx_msg void OnBnClickedEllipse();
-	afx_msg void OnBnClickedTriangle();
+	afx_msg void OnChooseRectangleClicked();
+	afx_msg void OnChooseEllipseClicked();
+	afx_msg void OnChooseTriangleClicked();
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
-	afx_msg void OnBnClickedBrdrclrCtrl();
-	afx_msg void OnCbnSelchangeBrdrwghtCtrl();
-	afx_msg void OnBnClickedFillclrCtrl();
+	afx_msg void OnPenColorChanged();
+	afx_msg void OnPenBorderWidthChanged();
+	afx_msg void OnFillColorChanged();
 	afx_msg void OnSaveClicked();
 	afx_msg void OnLoadClicked();
 };

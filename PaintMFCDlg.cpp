@@ -63,11 +63,11 @@ CPaintMFCDlg::CPaintMFCDlg(CWnd* pParent /*=nullptr*/)
 
 	_chosenShapeType = FIGURES::RECTANGLE;
 	_currentShapeDraw = NULL;
-	_drawMode = false;
-	_fillColor = RGB(255,255,255); // WHITE
-	_penColor = RGB(0,0,0); // BLACK
+	_drawMode = PAINT_TOOL::POINTER;
+	_isMousePressed = false;
+	_fillColor = RGB(255, 255, 255); // WHITE
+	_penColor = RGB(0, 0, 0); // BLACK
 	_penWidth = 1;
-	_shapeMovingMode = false;	
 }
 
 void CPaintMFCDlg::DoDataExchange(CDataExchange* pDX)
@@ -83,14 +83,14 @@ BEGIN_MESSAGE_MAP(CPaintMFCDlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 	ON_WM_MOUSEMOVE()
-	ON_BN_CLICKED(BTN_RECT2, &CPaintMFCDlg::OnBnClickedRectangle)
-	ON_BN_CLICKED(BTN_ELLIPSE, &CPaintMFCDlg::OnBnClickedEllipse)
+	ON_BN_CLICKED(BTN_RECT2, &CPaintMFCDlg::OnChooseRectangleClicked)
+	ON_BN_CLICKED(BTN_ELLIPSE, &CPaintMFCDlg::OnChooseEllipseClicked)
 	ON_WM_LBUTTONDOWN()
 	ON_WM_LBUTTONUP()
-	ON_BN_CLICKED(BTN_ELLIPSE2, &CPaintMFCDlg::OnBnClickedTriangle)
-	ON_BN_CLICKED(ID_BRDRCLR_CTRL, &CPaintMFCDlg::OnBnClickedBrdrclrCtrl)
-	ON_CBN_SELCHANGE(ID_BRDRWGHT_CTRL, &CPaintMFCDlg::OnCbnSelchangeBrdrwghtCtrl)
-	ON_BN_CLICKED(ID_FILLCLR_CTRL, &CPaintMFCDlg::OnBnClickedFillclrCtrl)
+	ON_BN_CLICKED(BTN_ELLIPSE2, &CPaintMFCDlg::OnChooseTriangleClicked)
+	ON_BN_CLICKED(ID_BRDRCLR_CTRL, &CPaintMFCDlg::OnPenColorChanged)
+	ON_CBN_SELCHANGE(ID_BRDRWGHT_CTRL, &CPaintMFCDlg::OnPenBorderWidthChanged)
+	ON_BN_CLICKED(ID_FILLCLR_CTRL, &CPaintMFCDlg::OnFillColorChanged)
 	ON_BN_CLICKED(SAVE_BTN, &CPaintMFCDlg::OnSaveClicked)
 	ON_BN_CLICKED(LOAD_BTN, &CPaintMFCDlg::OnLoadClicked)
 END_MESSAGE_MAP()
@@ -237,7 +237,7 @@ void CPaintMFCDlg::OnMouseMove(UINT nFlags, CPoint point)
 		return;
 
 
-	if (_drawMode == false)// && _shapeMovingMode == false)
+	if (_drawMode == PAINT_TOOL::DRAW)
 	{
 		CClientDC dc(this);
 		CPen pen(PS_SOLID, _penWidth, _penColor);
@@ -279,44 +279,41 @@ void CPaintMFCDlg::OnMouseMove(UINT nFlags, CPoint point)
 }
 
 
-void CPaintMFCDlg::OnBnClickedRectangle()
+void CPaintMFCDlg::OnChooseRectangleClicked()
 {
+	_drawMode = PAINT_TOOL::DRAW;
 	_chosenShapeType = FIGURES::RECTANGLE;
 	_isMousePressed = false;
-	_drawMode = false;
-	_shapeMovingMode = false;
 }
 
 
-void CPaintMFCDlg::OnBnClickedEllipse()
+void CPaintMFCDlg::OnChooseEllipseClicked()
 {
+	_drawMode = PAINT_TOOL::DRAW;
 	_chosenShapeType = FIGURES::ELLIPSE;
 	_isMousePressed = false;
-	_drawMode = false;
-	_shapeMovingMode = false;
 }
 
-void CPaintMFCDlg::OnBnClickedTriangle()
+void CPaintMFCDlg::OnChooseTriangleClicked()
 {
+	_drawMode = PAINT_TOOL::DRAW;
 	_chosenShapeType = FIGURES::TRIANGLE;
 	_isMousePressed = false;
-	_drawMode = false;
-	_shapeMovingMode = false;
 }
 
-void CPaintMFCDlg::OnBnClickedBrdrclrCtrl()
+void CPaintMFCDlg::OnPenColorChanged()
 {
 	_penColor = borderColorControl.GetColor();
 }
 
-void CPaintMFCDlg::OnCbnSelchangeBrdrwghtCtrl()
+void CPaintMFCDlg::OnPenBorderWidthChanged()
 {
 	CString tempWidth;
 	borderWeightControl.GetLBText(borderWeightControl.GetCurSel(), tempWidth);
 	_penWidth = _wtoi(tempWidth);
 }
 
-void CPaintMFCDlg::OnBnClickedFillclrCtrl()
+void CPaintMFCDlg::OnFillColorChanged()
 {
 	_fillColor = fillColorControl.GetColor();
 }
