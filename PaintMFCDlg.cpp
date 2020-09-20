@@ -206,7 +206,7 @@ void CPaintMFCDlg::InnerInit() {
 	shapeButton = (CButton*)GetDlgItem(BTN_RECT2);
 	shapeButton->ModifyStyle(0, BS_BITMAP);
 	shapeButton->SetBitmap(rectBmp);
-	
+
 	// Setting ellipse button
 	ellipseBmp.LoadBitmap(IDB_ELLIPSE_BMP);
 	shapeButton = (CButton*)GetDlgItem(BTN_ELLIPSE);
@@ -257,11 +257,11 @@ void CPaintMFCDlg::OnLButtonUp(UINT nFlags, CPoint point)
 	_endP = point;
 	_isMousePressed = false;
 
-	// save the figure in data array
 	if (_startP == _endP) {
 		return;
 	}
 
+	// save the figure in data array
 	_shapes.push_back(_currentShapeDraw);
 	Invalidate();
 	CDialogEx::OnLButtonUp(nFlags, point);
@@ -271,7 +271,6 @@ void CPaintMFCDlg::OnMouseMove(UINT nFlags, CPoint point)
 {
 	if (!_isMousePressed)
 		return;
-
 
 	if (_drawMode == PAINT_TOOL::DRAW)
 	{
@@ -287,7 +286,7 @@ void CPaintMFCDlg::OnMouseMove(UINT nFlags, CPoint point)
 		_currentShapeDraw->setX2(point.x);
 		_currentShapeDraw->setY2(point.y);
 		_currentShapeDraw->draw(&dc);
-
+		
 		dc.SelectObject(oldPen);
 		dc.SetROP2(R2_COPYPEN);
 	}

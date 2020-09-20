@@ -16,7 +16,7 @@ void Hexagon::recalculatePointsFromCircumscribedRectangle()
 		{getX1() + thirdWidth + thirdWidth, getY1()},
 		{getX2(), getY1() + halfHeight},
 		{getX2() - thirdWidth, getY2()},
-		{getX2() - thirdWidth - thirdWidth, getY2()},
+		{getX2() - thirdWidth - thirdWidth, getY2()}
 	};
 }
 
