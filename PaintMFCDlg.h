@@ -16,36 +16,21 @@ class CPaintMFCDlg : public CDialogEx
 {
 
 private:
-	/*For dialog*/
-	//CToolBar m_ToolBar;
-	//CMFCColorButton m_Color; //Color Taking from the button
-	//CComboBox m_ComboPenWidth;
-	//CEdit test;			//For tasting only,need to remove
-
-/*For painting....*/
 	int _penWidth;
 	COLORREF _penColor;
 	COLORREF _fillColor;
 	FIGURES _chosenShapeType;
 	Figure* _currentShapeDraw;
-	//int chosenFigure;
 
 	vector<Figure*> _shapes;
-//	CTypedPtrArray< CObArray, Figure*> _shapes;
-	//CTypedPtrArray< CObArray, Figure*> _tempShapes; // for Undo & Redo
-/*Boolian*/
 
 	bool _isMousePressed = false;
 	bool _shapeMovingMode;
-	bool _drawMode; // checking if i'm still on shape
-	//bool ShapeType1;
-	//bool ShapeType2;
-	//bool ShapeType3;
-
-	/*Points*/
+	bool _drawMode;
+	
 	CPoint _startP;
 	CPoint _endP;
-	CPoint _TLX; //TOP LEFT Point,for Proportion to moving
+	//CPoint _TLX; //TOP LEFT Point,for Proportion to moving
 
 
 	/* MFC Generated Code: */
