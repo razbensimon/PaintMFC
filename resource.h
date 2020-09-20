@@ -12,9 +12,7 @@
 #define IDB_LINE_BMP                    141
 #define IDB_RECT_BMP                    142
 #define IDB_TRIANGLE_BMP                143
-#define IDB_BITMAP1                     146
 #define IDB_HEXAGON_BMP                 146
-#define IDB_BITMAP2                     147
 #define IDB_REMOVE_TOOL                 147
 #define BTN_RECT2                       1001
 #define BTN_ELLIPSE                     1002
