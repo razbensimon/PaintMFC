@@ -60,6 +60,14 @@ CPaintMFCDlg::CPaintMFCDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_PAINTMFC_DIALOG, pParent)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
+
+	_chosenShapeType = FIGURES::RECTANGLE;
+	_currentShapeDraw = NULL;
+	_drawMode = false;
+	_fillColor = RGB(255,255,255); // WHITE
+	_penColor = RGB(0,0,0); // BLACK
+	_penWidth = 1;
+	_shapeMovingMode = false;	
 }
 
 void CPaintMFCDlg::DoDataExchange(CDataExchange* pDX)
@@ -177,11 +185,10 @@ HCURSOR CPaintMFCDlg::OnQueryDragIcon()
 /* #### Our CODE: ### */
 
 void CPaintMFCDlg::InnerInit() {
-	borderWeightControl.SetCurSel(0);  // Setting default border weight to 1
-	_penColor = RGB(0, 0, 0);
+	SetWindowText(_T("Paint App by Raz & Lior"));
+	borderWeightControl.SetCurSel(0);  // Setting default border weight to 1	
 	borderColorControl.SetColor(_penColor); // Setting default border color to Black
-	_fillColor = RGB(255, 255, 255);
-	fillColorControl.SetColor(_fillColor); // Setting default fill color to White
+	fillColorControl.SetColor(_fillColor); // Setting default fill color to White	
 }
 
 void CPaintMFCDlg::InnerOnPaint()
