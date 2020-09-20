@@ -19,6 +19,7 @@ void Triangle::recalculatePointsFromCircumscribedRectangle()
 json Triangle::toJson() const
 {
 	json figure = Figure::toJson();
-	figure["type"] = TRIANGLE;
+	figure["type"] = FIGURES::TRIANGLE;
+	figure["type"] = FIGURES::TRIANGLE;
 	return  figure;
 }

@@ -23,7 +23,7 @@ private:
 	//CEdit test;			//For tasting only,need to remove
 
 /*For painting....*/
-	double _penWidth;
+	int _penWidth;
 	COLORREF _penColor;
 	COLORREF _fillColor;
 	FIGURES _chosenShapeType;

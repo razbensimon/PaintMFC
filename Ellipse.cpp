@@ -13,9 +13,9 @@ void Ellipse::draw(CDC* displayContext) const
 	displayContext->Ellipse(getX1(), getY1(), getX2(), getY2());
 }
 
-json shapes::Ellipse::toJson() const
+json Ellipse::toJson() const
 {
 	json figure = Figure::toJson();	
-	figure["type"] = ELLIPSE;
+	figure["type"] = FIGURES::ELLIPSE;
 	return  figure;
 }

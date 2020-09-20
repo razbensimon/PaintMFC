@@ -16317,6 +16317,7 @@ class serializer
             }
         };
 
+		#pragma warning(disable:28020)
         const std::uint8_t type = utf8d[byte];
 
         codep = (state != UTF8_ACCEPT)

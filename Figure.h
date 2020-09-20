@@ -14,12 +14,12 @@ namespace shapes
 		int _y1;
 		int _x2;
 		int _y2;
-		double _penWidth;
+		int _penWidth;
 		COLORREF _penColor;
 		COLORREF _fillColor;
 	public:
 		virtual ~Figure() {}
-		Figure(int x1, int y1, int x2, int y2, double penWidth = 10.0, COLORREF color = BLACK, COLORREF fillColor = WHITE) {
+		Figure(int x1, int y1, int x2, int y2, int penWidth = 1, COLORREF color = BLACK, COLORREF fillColor = WHITE) {
 			this->_x1 = x1;
 			this->_y1 = y1;
 			this->_x2 = x2;
@@ -42,8 +42,8 @@ namespace shapes
 		virtual void setX2(int x2) { this->_x2 = x2; }
 		virtual void setY2(int y2) { this->_y2 = y2; }
 
-		double getPenWidth() const { return this->_penWidth; }
-		void setPenWidth(double width) { this->_penWidth = width; }
+		int getPenWidth() const { return this->_penWidth; }
+		void setPenWidth(int width) { this->_penWidth = width; }
 
 		COLORREF getColor() const { return this->_penColor; }
 		void setColor(COLORREF color) { this->_penColor = color; }

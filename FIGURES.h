@@ -1,7 +1,7 @@
 #pragma once
 
 
-enum FIGURES
+enum class FIGURES
 {
 	RECTANGLE = 0,
 	ELLIPSE,

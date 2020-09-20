@@ -177,7 +177,6 @@ HCURSOR CPaintMFCDlg::OnQueryDragIcon()
 /* #### Our CODE: ### */
 
 void CPaintMFCDlg::InnerInit() {
-
 	borderWeightControl.SetCurSel(0);  // Setting default border weight to 1
 	_penColor = RGB(0, 0, 0);
 	borderColorControl.SetColor(_penColor); // Setting default border color to Black
@@ -189,7 +188,7 @@ void CPaintMFCDlg::InnerOnPaint()
 {
 	CPaintDC context(this);
 
-	for (int i = 0; i < _shapes.size(); i++)
+	for (int i = 0; i < static_cast<int>(_shapes.size()); i++)
 		_shapes[i]->draw(&context);
 }
 
@@ -275,7 +274,7 @@ void CPaintMFCDlg::OnMouseMove(UINT nFlags, CPoint point)
 
 void CPaintMFCDlg::OnBnClickedRectangle()
 {
-	_chosenShapeType = RECTANGLE;
+	_chosenShapeType = FIGURES::RECTANGLE;
 	_isMousePressed = false;
 	_drawMode = false;
 	_shapeMovingMode = false;
@@ -284,7 +283,7 @@ void CPaintMFCDlg::OnBnClickedRectangle()
 
 void CPaintMFCDlg::OnBnClickedEllipse()
 {
-	_chosenShapeType = ELLIPSE;
+	_chosenShapeType = FIGURES::ELLIPSE;
 	_isMousePressed = false;
 	_drawMode = false;
 	_shapeMovingMode = false;
@@ -292,7 +291,7 @@ void CPaintMFCDlg::OnBnClickedEllipse()
 
 void CPaintMFCDlg::OnBnClickedTriangle()
 {
-	_chosenShapeType = TRIANGLE;
+	_chosenShapeType = FIGURES::TRIANGLE;
 	_isMousePressed = false;
 	_drawMode = false;
 	_shapeMovingMode = false;
@@ -307,7 +306,7 @@ void CPaintMFCDlg::OnCbnSelchangeBrdrwghtCtrl()
 {
 	CString tempWidth;
 	borderWeightControl.GetLBText(borderWeightControl.GetCurSel(), tempWidth);
-	_penWidth = _wtof(tempWidth);
+	_penWidth = _wtoi(tempWidth);
 }
 
 void CPaintMFCDlg::OnBnClickedFillclrCtrl()
