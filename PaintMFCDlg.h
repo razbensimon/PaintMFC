@@ -89,4 +89,6 @@ public:
 	afx_msg void OnBnClickedBrdrclrCtrl();
 	afx_msg void OnCbnSelchangeBrdrwghtCtrl();
 	afx_msg void OnBnClickedFillclrCtrl();
+	afx_msg void OnSaveClicked();
+	afx_msg void OnLoadClicked();
 };

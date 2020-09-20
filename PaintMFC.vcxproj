@@ -188,6 +188,7 @@
     <ClInclude Include="Figure.h" />
     <ClInclude Include="FIGURES.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="json.hpp" />
     <ClInclude Include="PaintMFC.h" />
     <ClInclude Include="PaintMFCDlg.h" />
     <ClInclude Include="pch.h" />

@@ -7,7 +7,10 @@
 #include "PaintMFC.h"
 #include "PaintMFCDlg.h"
 #include "afxdialogex.h"
+#include <fstream>
 #include "ShapesFactory.h"
+#include "json.hpp"
+using json = nlohmann::json;
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -78,6 +81,8 @@ BEGIN_MESSAGE_MAP(CPaintMFCDlg, CDialogEx)
 	ON_BN_CLICKED(ID_BRDRCLR_CTRL, &CPaintMFCDlg::OnBnClickedBrdrclrCtrl)
 	ON_CBN_SELCHANGE(ID_BRDRWGHT_CTRL, &CPaintMFCDlg::OnCbnSelchangeBrdrwghtCtrl)
 	ON_BN_CLICKED(ID_FILLCLR_CTRL, &CPaintMFCDlg::OnBnClickedFillclrCtrl)
+	ON_BN_CLICKED(SAVE_BTN, &CPaintMFCDlg::OnSaveClicked)
+	ON_BN_CLICKED(LOAD_BTN, &CPaintMFCDlg::OnLoadClicked)
 END_MESSAGE_MAP()
 
 
@@ -223,7 +228,7 @@ void CPaintMFCDlg::OnMouseMove(UINT nFlags, CPoint point)
 	if (!_isMousePressed)
 		return;
 
-
+	
 	if (_drawMode == false)// && _shapeMovingMode == false)
 	{
 		CClientDC dc(this);
@@ -306,4 +311,19 @@ void CPaintMFCDlg::OnCbnSelchangeBrdrwghtCtrl()
 void CPaintMFCDlg::OnBnClickedFillclrCtrl()
 {
 	_fillColor = fillColorControl.GetColor();
+}
+
+
+void CPaintMFCDlg::OnSaveClicked()
+{
+	json figureJson = _currentShapeDraw->toJson();
+	auto st = figureJson.dump(4); // pretty print	
+}
+
+
+void CPaintMFCDlg::OnLoadClicked()
+{
+	json figureJson = _currentShapeDraw->toJson();
+
+	auto figure = ShapesFactory::createShape(figureJson);
 }

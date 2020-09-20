@@ -1,4 +1,6 @@
 #pragma once
+#include "json.hpp"
+using json = nlohmann::json;
 
 const COLORREF BLACK = RGB(0,0,0);
 const COLORREF WHITE = RGB(255,255,255);
@@ -6,7 +8,7 @@ const COLORREF WHITE = RGB(255,255,255);
 namespace shapes
 {
 	class Figure
-	{
+	{		
 	protected:
 		int _x1;
 		int _y1;
@@ -50,6 +52,20 @@ namespace shapes
 		void setFillColor(COLORREF color) { this->_fillColor = color; }		
 
 		virtual void draw(CDC* displayContext) const = 0;
+
+		virtual json toJson() const
+		{
+			json figure;
+			figure["x1"] = getX1();
+			figure["y1"] = getY1();
+			figure["x2"] = getX2();
+			figure["y2"] = getY2();
+			figure["penWidth"] = getPenWidth();
+			figure["color"] = getColor();
+			figure["fillColor"] = getFillColor();
+
+			return figure;
+		}
 	};
 
 }

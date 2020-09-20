@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "Ellipse.h"
-
+#include "FIGURES.h"
 
 using namespace shapes;
 
@@ -12,4 +12,11 @@ void Ellipse::draw(CDC* displayContext) const
 	displayContext->SelectObject(&brush);
 	
 	displayContext->Ellipse(getX1(), getY1(), getX2(), getY2());
+}
+
+json shapes::Ellipse::toJson() const
+{
+	json figure = Figure::toJson();	
+	figure["type"] = ELLIPSE;
+	return  figure;
 }
