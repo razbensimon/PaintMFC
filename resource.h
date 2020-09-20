@@ -15,7 +15,6 @@
 #define IDB_BITMAP1                     146
 #define IDB_HEXAGON_BMP                 146
 #define BTN_RECT2                       1001
-#define IDC_BUTTON2                     1002
 #define BTN_ELLIPSE                     1002
 #define BTN_ELLIPSE2                    1003
 #define BTN_TRIANGLE                    1003
@@ -28,13 +27,11 @@
 #define ID_CLEAR                        1012
 #define ID_REDO                         1014
 #define ID_UNDO                         1015
-#define IDC_BUTTON3                     1018
 #define BTN_LINE                        1018
 #define SAVE_BTN                        1019
 #define LOAD_BTN                        1020
-#define IDC_BUTTON1                     1021
 #define BTN_HEXAGON                     1021
-#define IDC_BUTTON4                     1022
+#define BTN_REMOVE                      1022
 
 // Next default values for new objects
 // 

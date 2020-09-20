@@ -81,5 +81,6 @@ public:
 	afx_msg void OnBnClickedUndo();
 	afx_msg void OnBnClickedRedo();
 	afx_msg void OnBnClickedClear();
-	afx_msg void OnChooseHexagonClicked();
+	afx_msg void OnChooseHexagonClicked();	
+	afx_msg void OnRemoveToolClicked();
 };

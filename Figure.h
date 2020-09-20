@@ -2,13 +2,13 @@
 #include "json.hpp"
 using json = nlohmann::json;
 
-const COLORREF BLACK = RGB(0,0,0);
-const COLORREF WHITE = RGB(255,255,255);
+const COLORREF BLACK = RGB(0, 0, 0);
+const COLORREF WHITE = RGB(255, 255, 255);
 
 namespace shapes
 {
 	class Figure
-	{		
+	{
 	protected:
 		int _x1;
 		int _y1;
@@ -49,7 +49,7 @@ namespace shapes
 		void setColor(COLORREF color) { this->_penColor = color; }
 
 		COLORREF getFillColor() const { return this->_fillColor; }
-		void setFillColor(COLORREF color) { this->_fillColor = color; }		
+		void setFillColor(COLORREF color) { this->_fillColor = color; }
 
 		virtual void draw(CDC* displayContext) const = 0;
 
@@ -65,6 +65,20 @@ namespace shapes
 			figure["fillColor"] = getFillColor();
 
 			return figure;
+		}
+
+		virtual bool isContains(const POINT& point)
+		{
+			const auto leftX = min(getX1(), getX2());
+			const auto rightX = max(getX1(), getX2());
+			const auto topX = max(getY1(), getY2());
+			const auto bottomX = min(getY1(), getY2());
+
+			if (point.x >= leftX && point.x <= rightX && point.y <= topX && point.y >= bottomX) {
+				return true;
+			}
+
+			return false;
 		}
 	};
 

@@ -98,6 +98,7 @@ BEGIN_MESSAGE_MAP(CPaintMFCDlg, CDialogEx)
 	ON_BN_CLICKED(ID_UNDO, &CPaintMFCDlg::OnBnClickedUndo)
 	ON_BN_CLICKED(BTN_LINE, &CPaintMFCDlg::OnBnClickedLine)
 	ON_BN_CLICKED(BTN_HEXAGON, &CPaintMFCDlg::OnChooseHexagonClicked)
+	ON_BN_CLICKED(BTN_REMOVE, &CPaintMFCDlg::OnRemoveToolClicked)
 END_MESSAGE_MAP()
 
 
@@ -257,14 +258,25 @@ void CPaintMFCDlg::OnLButtonUp(UINT nFlags, CPoint point)
 	_endP = point;
 	_isMousePressed = false;
 
-	if (_startP == _endP) {
-		return;
-	}
 
-	// save the figure in data array
-	_shapes.push_back(_currentShapeDraw);
-	Invalidate();
-	CDialogEx::OnLButtonUp(nFlags, point);
+	if (_drawMode == PAINT_TOOL::DRAW) {
+		if (_startP == _endP) {
+			return;
+		}
+
+		// save the figure in data array
+		_shapes.push_back(_currentShapeDraw);
+		Invalidate();
+	}
+	else if (_drawMode == PAINT_TOOL::REMOVE) {
+		for (auto iterator = _shapes.rbegin(); iterator != _shapes.rend(); ++iterator) {
+			if ((*iterator)->isContains(point)) {
+				_shapes.erase((iterator + 1).base());
+				Invalidate();
+				break;
+			}
+		}
+	}
 }
 
 void CPaintMFCDlg::OnMouseMove(UINT nFlags, CPoint point)
@@ -286,11 +298,11 @@ void CPaintMFCDlg::OnMouseMove(UINT nFlags, CPoint point)
 		_currentShapeDraw->setX2(point.x);
 		_currentShapeDraw->setY2(point.y);
 		_currentShapeDraw->draw(&dc);
-		
+
 		dc.SelectObject(oldPen);
 		dc.SetROP2(R2_COPYPEN);
 	}
-	/*else if ((_isMousePressed) && (_shapeMovingMode) && (_drawMode))
+	/*else if (_drawMode == PAINT_TOOL::REMOVE)
 	{
 		RECT r;
 		int x, y;
@@ -429,4 +441,10 @@ void CPaintMFCDlg::OnBnClickedUndo()
 		_temp.push_back(tempfig);
 		Invalidate();
 	}
+}
+
+void CPaintMFCDlg::OnRemoveToolClicked()
+{
+	_drawMode = PAINT_TOOL::REMOVE;
+	_isMousePressed = false;
 }
