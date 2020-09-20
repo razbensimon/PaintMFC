@@ -383,6 +383,7 @@ void CPaintMFCDlg::OnLoadClicked()
 		return; // don't load on nothing	
 
 	_shapes.clear();
+	_temp.clear();
 	for (json const& figureJson : figuresArrJson) {
 		Figure* figure = ShapesFactory::createShape(figureJson);
 		_shapes.push_back(figure);
@@ -392,17 +393,14 @@ void CPaintMFCDlg::OnLoadClicked()
 
 void CPaintMFCDlg::OnBnClickedClear()
 {
-	while (_shapes.size() > 0)
-		_shapes.pop_back();
-
-	while (_temp.size() > 0)
-		_temp.pop_back();
+	_shapes.clear();
+	_temp.clear();
 	Invalidate(TRUE);
 }
 
 void CPaintMFCDlg::OnBnClickedRedo()
 {
-	if (_temp.size() > 0)
+	if (!_temp.empty())
 	{
 		Figure* tempfig = _temp.back();
 		_temp.pop_back();
@@ -414,7 +412,7 @@ void CPaintMFCDlg::OnBnClickedRedo()
 
 void CPaintMFCDlg::OnBnClickedUndo()
 {
-	if (_shapes.size() > 0)
+	if (!_shapes.empty())
 	{
 		Figure* tempfig = _shapes.back();
 		_shapes.pop_back();

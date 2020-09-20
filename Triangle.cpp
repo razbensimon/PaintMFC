@@ -20,6 +20,5 @@ json Triangle::toJson() const
 {
 	json figure = Figure::toJson();
 	figure["type"] = FIGURES::TRIANGLE;
-	figure["type"] = FIGURES::TRIANGLE;
 	return  figure;
 }
