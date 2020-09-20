@@ -24,6 +24,7 @@ private:
 	Figure* _currentShapeDraw;
 
 	vector<Figure*> _shapes;
+	vector<Figure*> _temp;  // for Redo and Undo
 
 	bool _isMousePressed;
 	PAINT_TOOL _drawMode;
@@ -33,7 +34,7 @@ private:
 	//CPoint _TLX; //TOP LEFT Point,for Proportion to moving
 
 
-	/* MFC Generated Code: */
+/* MFC Generated Code: */
 // Construction
 public:
 	CPaintMFCDlg(CWnd* pParent = nullptr);	// standard constructor
@@ -68,6 +69,7 @@ public:
 	afx_msg void OnChooseRectangleClicked();
 	afx_msg void OnChooseEllipseClicked();
 	afx_msg void OnChooseTriangleClicked();
+	afx_msg void OnBnClickedLine();
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
@@ -76,4 +78,7 @@ public:
 	afx_msg void OnFillColorChanged();
 	afx_msg void OnSaveClicked();
 	afx_msg void OnLoadClicked();
+	afx_msg void OnBnClickedUndo();
+	afx_msg void OnBnClickedRedo();
+	afx_msg void OnBnClickedClear();
 };

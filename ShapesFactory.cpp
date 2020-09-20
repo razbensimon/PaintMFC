@@ -5,6 +5,7 @@
 #include "Rectangle.h"
 #include "Ellipse.h"
 #include "Triangle.h"
+#include "Line.h"
 
 using namespace shapes;
 
@@ -19,6 +20,8 @@ Figure* ShapesFactory::createShape(FIGURES figureType, int x1, int y1, int x2, i
 		return new shapes::Ellipse(x1, y1, x2, y2, penWidth, color, fillColor);
 	case FIGURES::TRIANGLE:
 		return new Triangle(x1, y1, x2, y2, penWidth, color, fillColor);
+	case FIGURES::LINE:
+		return new Line(x1, y1, x2, y2, penWidth, color);
 	}
 }
 

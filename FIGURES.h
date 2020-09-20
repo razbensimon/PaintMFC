@@ -5,5 +5,6 @@ enum class FIGURES
 {
 	RECTANGLE = 0,
 	ELLIPSE,
-	TRIANGLE
+	TRIANGLE,
+	LINE
 };

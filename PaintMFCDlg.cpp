@@ -93,6 +93,10 @@ BEGIN_MESSAGE_MAP(CPaintMFCDlg, CDialogEx)
 	ON_BN_CLICKED(ID_FILLCLR_CTRL, &CPaintMFCDlg::OnFillColorChanged)
 	ON_BN_CLICKED(SAVE_BTN, &CPaintMFCDlg::OnSaveClicked)
 	ON_BN_CLICKED(LOAD_BTN, &CPaintMFCDlg::OnLoadClicked)
+	ON_BN_CLICKED(ID_CLEAR, &CPaintMFCDlg::OnBnClickedClear)
+	ON_BN_CLICKED(ID_REDO, &CPaintMFCDlg::OnBnClickedRedo)
+	ON_BN_CLICKED(ID_UNDO, &CPaintMFCDlg::OnBnClickedUndo)
+	ON_BN_CLICKED(BTN_LINE, &CPaintMFCDlg::OnBnClickedLine)
 END_MESSAGE_MAP()
 
 
@@ -183,12 +187,41 @@ HCURSOR CPaintMFCDlg::OnQueryDragIcon()
 
 
 /* #### Our CODE: ### */
-
 void CPaintMFCDlg::InnerInit() {
 	SetWindowText(_T("Paint App by Raz & Lior"));
 	borderWeightControl.SetCurSel(0);  // Setting default border weight to 1	
 	borderColorControl.SetColor(_penColor); // Setting default border color to Black
 	fillColorControl.SetColor(_fillColor); // Setting default fill color to White	
+
+	CBitmap rectBmp;
+	CBitmap ellipseBmp;
+	CBitmap triangleBmp;
+	CBitmap lineBmp;
+	CButton* shapeButton;
+
+	// Setting rectangle button
+	rectBmp.LoadBitmap(IDB_RECT_BMP);
+	shapeButton = (CButton*)GetDlgItem(BTN_RECT2);
+	shapeButton->ModifyStyle(0, BS_BITMAP);
+	shapeButton->SetBitmap(rectBmp);
+	
+	// Setting ellipse button
+	ellipseBmp.LoadBitmap(IDB_ELLIPSE_BMP);
+	shapeButton = (CButton*)GetDlgItem(BTN_ELLIPSE);
+	shapeButton->ModifyStyle(0, BS_BITMAP);
+	shapeButton->SetBitmap(ellipseBmp);
+
+	// Setting triangle button
+	triangleBmp.LoadBitmap(IDB_TRIANGLE_BMP);
+	shapeButton = (CButton*)GetDlgItem(BTN_TRIANGLE);
+	shapeButton->ModifyStyle(0, BS_BITMAP);
+	shapeButton->SetBitmap(triangleBmp);
+
+	// Setting line button
+	lineBmp.LoadBitmap(IDB_LINE_BMP);
+	shapeButton = (CButton*)GetDlgItem(BTN_LINE);
+	shapeButton->ModifyStyle(0, BS_BITMAP);
+	shapeButton->SetBitmap(lineBmp);
 }
 
 void CPaintMFCDlg::InnerOnPaint()
@@ -204,12 +237,6 @@ void CPaintMFCDlg::OnLButtonDown(UINT nFlags, CPoint point)
 	// save start cursor point
 	_endP = _startP = point;
 	_isMousePressed = true;
-
-	//CString chosenBorderWeight;
-	//borderWeightControl.GetWindowTextW(chosenBorderWeight);
-	//_penWidth = _wtof(chosenBorderWeight);
-	//_penColor = borderColorControl.GetColor();
-	//_fillColor = fillColorControl.GetColor();
 
 	_currentShapeDraw = ShapesFactory::createShape(_chosenShapeType, point.x, point.y, point.x, point.y, _penWidth, _penColor, _fillColor);
 
@@ -301,6 +328,13 @@ void CPaintMFCDlg::OnChooseTriangleClicked()
 	_isMousePressed = false;
 }
 
+void CPaintMFCDlg::OnBnClickedLine()
+{
+	_drawMode = PAINT_TOOL::DRAW;
+	_chosenShapeType = FIGURES::LINE;
+	_isMousePressed = false;
+}
+
 void CPaintMFCDlg::OnPenColorChanged()
 {
 	_penColor = borderColorControl.GetColor();
@@ -354,4 +388,37 @@ void CPaintMFCDlg::OnLoadClicked()
 		_shapes.push_back(figure);
 	}
 	Invalidate();
+}
+
+void CPaintMFCDlg::OnBnClickedClear()
+{
+	while (_shapes.size() > 0)
+		_shapes.pop_back();
+
+	while (_temp.size() > 0)
+		_temp.pop_back();
+	Invalidate(TRUE);
+}
+
+void CPaintMFCDlg::OnBnClickedRedo()
+{
+	if (_temp.size() > 0)
+	{
+		Figure* tempfig = _temp.back();
+		_temp.pop_back();
+		_shapes.push_back(tempfig);
+		Invalidate(TRUE);
+	}
+}
+
+
+void CPaintMFCDlg::OnBnClickedUndo()
+{
+	if (_shapes.size() > 0)
+	{
+		Figure* tempfig = _shapes.back();
+		_shapes.pop_back();
+		_temp.push_back(tempfig);
+		Invalidate(TRUE);
+	}
 }

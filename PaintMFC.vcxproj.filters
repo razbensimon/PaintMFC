@@ -57,6 +57,9 @@
     <ClInclude Include="Ellipse.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Line.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="json.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -95,6 +98,9 @@
     <ClCompile Include="Ellipse.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Line.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="PAINT_TOOL.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -113,7 +119,25 @@
     <Image Include="res\PaintMFC.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="res\toolbar1.bmp">
+    <Image Include="res\rectangle.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\line.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\rectangle.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\ellipse.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\line.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\rect.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\triangle.bmp">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

@@ -188,6 +188,7 @@
     <ClInclude Include="Figure.h" />
     <ClInclude Include="FIGURES.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="Line.h" />
     <ClInclude Include="json.hpp" />
     <ClInclude Include="PaintMFC.h" />
     <ClInclude Include="PaintMFCDlg.h" />
@@ -204,6 +205,7 @@
     <ClCompile Include="Ellipse.cpp" />
     <ClCompile Include="Figure.cpp" />
     <ClCompile Include="FIGURES.cpp" />
+    <ClCompile Include="Line.cpp" />
     <ClCompile Include="PaintMFC.cpp" />
     <ClCompile Include="PaintMFCDlg.cpp" />
     <ClCompile Include="PAINT_TOOL.cpp" />
@@ -225,8 +227,14 @@
     <None Include="res\PaintMFC.rc2" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="res\ellipse.bmp" />
+    <Image Include="res\line.bmp" />
+    <Image Include="res\line.png" />
     <Image Include="res\PaintMFC.ico" />
-    <Image Include="res\toolbar1.bmp" />
+    <Image Include="res\rect.bmp" />
+    <Image Include="res\rectangle.ico" />
+    <Image Include="res\rectangle.png" />
+    <Image Include="res\triangle.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
