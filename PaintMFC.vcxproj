@@ -188,6 +188,7 @@
     <ClInclude Include="Figure.h" />
     <ClInclude Include="FIGURES.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="Hexagon.h" />
     <ClInclude Include="Line.h" />
     <ClInclude Include="json.hpp" />
     <ClInclude Include="PaintMFC.h" />
@@ -205,6 +206,7 @@
     <ClCompile Include="Ellipse.cpp" />
     <ClCompile Include="Figure.cpp" />
     <ClCompile Include="FIGURES.cpp" />
+    <ClCompile Include="Hexagon.cpp" />
     <ClCompile Include="Line.cpp" />
     <ClCompile Include="PaintMFC.cpp" />
     <ClCompile Include="PaintMFCDlg.cpp" />
@@ -227,7 +229,9 @@
     <None Include="res\PaintMFC.rc2" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="res\bitmap1.bmp" />
     <Image Include="res\ellipse.bmp" />
+    <Image Include="res\hexagon.bmp" />
     <Image Include="res\line.bmp" />
     <Image Include="res\line.png" />
     <Image Include="res\PaintMFC.ico" />

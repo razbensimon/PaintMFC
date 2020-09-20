@@ -97,6 +97,7 @@ BEGIN_MESSAGE_MAP(CPaintMFCDlg, CDialogEx)
 	ON_BN_CLICKED(ID_REDO, &CPaintMFCDlg::OnBnClickedRedo)
 	ON_BN_CLICKED(ID_UNDO, &CPaintMFCDlg::OnBnClickedUndo)
 	ON_BN_CLICKED(BTN_LINE, &CPaintMFCDlg::OnBnClickedLine)
+	ON_BN_CLICKED(BTN_HEXAGON, &CPaintMFCDlg::OnChooseHexagonClicked)
 END_MESSAGE_MAP()
 
 
@@ -196,6 +197,7 @@ void CPaintMFCDlg::InnerInit() {
 	CBitmap rectBmp;
 	CBitmap ellipseBmp;
 	CBitmap triangleBmp;
+	CBitmap hexagonBmp;
 	CBitmap lineBmp;
 	CButton* shapeButton;
 
@@ -216,6 +218,12 @@ void CPaintMFCDlg::InnerInit() {
 	shapeButton = (CButton*)GetDlgItem(BTN_TRIANGLE);
 	shapeButton->ModifyStyle(0, BS_BITMAP);
 	shapeButton->SetBitmap(triangleBmp);
+
+	// Setting hexagon button
+	hexagonBmp.LoadBitmap(IDB_HEXAGON_BMP);
+	shapeButton = (CButton*)GetDlgItem(BTN_HEXAGON);
+	shapeButton->ModifyStyle(0, BS_BITMAP);
+	shapeButton->SetBitmap(hexagonBmp);
 
 	// Setting line button
 	lineBmp.LoadBitmap(IDB_LINE_BMP);
@@ -251,8 +259,11 @@ void CPaintMFCDlg::OnLButtonUp(UINT nFlags, CPoint point)
 	_isMousePressed = false;
 
 	// save the figure in data array
-	_shapes.push_back(_currentShapeDraw);
+	if (_startP == _endP) {
+		return;
+	}
 
+	_shapes.push_back(_currentShapeDraw);
 	Invalidate();
 	CDialogEx::OnLButtonUp(nFlags, point);
 }
@@ -328,6 +339,13 @@ void CPaintMFCDlg::OnChooseTriangleClicked()
 	_isMousePressed = false;
 }
 
+void CPaintMFCDlg::OnChooseHexagonClicked()
+{
+	_drawMode = PAINT_TOOL::DRAW;
+	_chosenShapeType = FIGURES::HEXAGON;
+	_isMousePressed = false;
+}
+
 void CPaintMFCDlg::OnBnClickedLine()
 {
 	_drawMode = PAINT_TOOL::DRAW;
@@ -395,7 +413,7 @@ void CPaintMFCDlg::OnBnClickedClear()
 {
 	_shapes.clear();
 	_temp.clear();
-	Invalidate(TRUE);
+	Invalidate();
 }
 
 void CPaintMFCDlg::OnBnClickedRedo()
@@ -405,7 +423,7 @@ void CPaintMFCDlg::OnBnClickedRedo()
 		Figure* tempfig = _temp.back();
 		_temp.pop_back();
 		_shapes.push_back(tempfig);
-		Invalidate(TRUE);
+		Invalidate();
 	}
 }
 
@@ -417,6 +435,6 @@ void CPaintMFCDlg::OnBnClickedUndo()
 		Figure* tempfig = _shapes.back();
 		_shapes.pop_back();
 		_temp.push_back(tempfig);
-		Invalidate(TRUE);
+		Invalidate();
 	}
 }

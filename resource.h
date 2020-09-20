@@ -12,6 +12,8 @@
 #define IDB_LINE_BMP                    141
 #define IDB_RECT_BMP                    142
 #define IDB_TRIANGLE_BMP                143
+#define IDB_BITMAP1                     146
+#define IDB_HEXAGON_BMP                 146
 #define BTN_RECT2                       1001
 #define IDC_BUTTON2                     1002
 #define BTN_ELLIPSE                     1002
@@ -31,13 +33,14 @@
 #define SAVE_BTN                        1019
 #define LOAD_BTN                        1020
 #define IDC_BUTTON1                     1021
+#define BTN_HEXAGON                     1021
 #define IDC_BUTTON4                     1022
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        144
+#define _APS_NEXT_RESOURCE_VALUE        147
 #define _APS_NEXT_COMMAND_VALUE         32771
 #define _APS_NEXT_CONTROL_VALUE         1023
 #define _APS_NEXT_SYMED_VALUE           101

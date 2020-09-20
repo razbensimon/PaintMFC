@@ -66,6 +66,9 @@
     <ClInclude Include="PAINT_TOOL.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Hexagon.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PaintMFC.cpp">
@@ -104,6 +107,9 @@
     <ClCompile Include="PAINT_TOOL.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Hexagon.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="PaintMFC.rc">
@@ -138,6 +144,12 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="res\triangle.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\bitmap1.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\hexagon.bmp">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
