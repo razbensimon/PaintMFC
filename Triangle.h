@@ -17,6 +17,7 @@ namespace  shapes
 		}
 
 		virtual void recalculatePointsFromCircumscribedRectangle() override;
+		virtual json toJson() const override;
 	};
 }
 

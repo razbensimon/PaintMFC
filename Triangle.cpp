@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Triangle.h"
+#include "FIGURES.h"
 
 using namespace shapes;
 
@@ -13,4 +14,11 @@ void Triangle::recalculatePointsFromCircumscribedRectangle()
 		{getX2() , getY1()},
 		{getX1() + halfWidth, getY2()}
 	};
+}
+
+json Triangle::toJson() const
+{
+	json figure = Figure::toJson();
+	figure["type"] = TRIANGLE;
+	return  figure;
 }

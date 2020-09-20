@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Rectangle.h"
+#include "FIGURES.h"
 
 using namespace shapes;
 
@@ -11,4 +12,10 @@ void Rectangle::draw(CDC* displayContext) const
 	displayContext->SelectObject(&brush);
 
 	displayContext->Rectangle(getX1(), getY1(), getX2(), getY2());
+}
+json Rectangle::toJson() const
+{
+	json figure = Figure::toJson();
+	figure["type"] = RECTANGLE;
+	return  figure;
 }

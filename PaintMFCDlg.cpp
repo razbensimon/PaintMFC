@@ -317,7 +317,7 @@ void CPaintMFCDlg::OnBnClickedFillclrCtrl()
 void CPaintMFCDlg::OnSaveClicked()
 {
 	json figureJson = _currentShapeDraw->toJson();
-	auto st = figureJson.dump(4); // pretty print	
+	auto st = figureJson.dump(4); // pretty print
 }
 
 

@@ -9,8 +9,7 @@ void Ellipse::draw(CDC* displayContext) const
 	CPen pen(PS_SOLID, getPenWidth(), getColor());
 	displayContext->SelectObject(&pen);
 	CBrush brush(getFillColor());
-	displayContext->SelectObject(&brush);
-	
+	displayContext->SelectObject(&brush);	
 	displayContext->Ellipse(getX1(), getY1(), getX2(), getY2());
 }
 
