@@ -8,6 +8,8 @@
 #include "PaintMFCDlg.h"
 #include "afxdialogex.h"
 #include <fstream>
+#include <iomanip>
+
 #include "ShapesFactory.h"
 #include "json.hpp"
 using json = nlohmann::json;
@@ -317,13 +319,22 @@ void CPaintMFCDlg::OnBnClickedFillclrCtrl()
 void CPaintMFCDlg::OnSaveClicked()
 {
 	json figureJson = _currentShapeDraw->toJson();
-	auto st = figureJson.dump(4); // pretty print
+	//auto st = figureJson.dump(4); // pretty print
+
+	ofstream o("savedState.json");
+	o << std::setw(4) << figureJson << std::endl;
 }
 
 
 void CPaintMFCDlg::OnLoadClicked()
 {
-	json figureJson = _currentShapeDraw->toJson();
-
+	//json figureJson = _currentShapeDraw->toJson();
+	ifstream i("savedState.json");
+	json figureJson;
+	i >> figureJson;
 	auto figure = ShapesFactory::createShape(figureJson);
+
+	_shapes.clear();
+	_shapes.push_back(figure);
+	Invalidate();
 }
