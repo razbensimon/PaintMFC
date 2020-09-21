@@ -93,10 +93,10 @@ BEGIN_MESSAGE_MAP(CPaintMFCDlg, CDialogEx)
 	ON_BN_CLICKED(ID_FILLCLR_CTRL, &CPaintMFCDlg::OnFillColorChanged)
 	ON_BN_CLICKED(SAVE_BTN, &CPaintMFCDlg::OnSaveClicked)
 	ON_BN_CLICKED(LOAD_BTN, &CPaintMFCDlg::OnLoadClicked)
-	ON_BN_CLICKED(ID_CLEAR, &CPaintMFCDlg::OnBnClickedClear)
-	ON_BN_CLICKED(ID_REDO, &CPaintMFCDlg::OnBnClickedRedo)
-	ON_BN_CLICKED(ID_UNDO, &CPaintMFCDlg::OnBnClickedUndo)
-	ON_BN_CLICKED(BTN_LINE, &CPaintMFCDlg::OnBnClickedLine)
+	ON_BN_CLICKED(ID_CLEAR, &CPaintMFCDlg::OnClearClicked)
+	ON_BN_CLICKED(ID_REDO, &CPaintMFCDlg::OnRedoClicked)
+	ON_BN_CLICKED(ID_UNDO, &CPaintMFCDlg::OnUndoClicked)
+	ON_BN_CLICKED(BTN_LINE, &CPaintMFCDlg::OnChooseLineClicked)
 	ON_BN_CLICKED(BTN_HEXAGON, &CPaintMFCDlg::OnChooseHexagonClicked)
 	ON_BN_CLICKED(BTN_REMOVE, &CPaintMFCDlg::OnRemoveToolClicked)
 END_MESSAGE_MAP()
@@ -187,7 +187,6 @@ HCURSOR CPaintMFCDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
-
 /* #### Our CODE: ### */
 void CPaintMFCDlg::InnerInit() {
 	SetWindowText(_T("Paint App by Raz & Lior"));
@@ -195,49 +194,23 @@ void CPaintMFCDlg::InnerInit() {
 	borderColorControl.SetColor(_penColor); // Setting default border color to Black
 	fillColorControl.SetColor(_fillColor); // Setting default fill color to White	
 
-	CBitmap rectBmp;
-	CBitmap ellipseBmp;
-	CBitmap triangleBmp;
-	CBitmap hexagonBmp;
-	CBitmap lineBmp;
-	CBitmap removeBmp;
-	CButton* shapeButton;
+	// Setting bitmaps to buttons
+	LoadBitmapToButton(BTN_REMOVE, IDB_REMOVE_TOOL);
+	LoadBitmapToButton(BTN_LINE, IDB_LINE_BMP);
+	LoadBitmapToButton(BTN_HEXAGON, IDB_HEXAGON_BMP);
+	LoadBitmapToButton(BTN_TRIANGLE, IDB_TRIANGLE_BMP);
+	LoadBitmapToButton(BTN_ELLIPSE, IDB_ELLIPSE_BMP);
+	LoadBitmapToButton(BTN_RECT2, IDB_RECT_BMP);	
+}
 
-	// Setting rectangle button
-	rectBmp.LoadBitmap(IDB_RECT_BMP);
-	shapeButton = (CButton*)GetDlgItem(BTN_RECT2);
-	shapeButton->ModifyStyle(0, BS_BITMAP);
-	shapeButton->SetBitmap(rectBmp);
-
-	// Setting ellipse button
-	ellipseBmp.LoadBitmap(IDB_ELLIPSE_BMP);
-	shapeButton = (CButton*)GetDlgItem(BTN_ELLIPSE);
-	shapeButton->ModifyStyle(0, BS_BITMAP);
-	shapeButton->SetBitmap(ellipseBmp);
-
-	// Setting triangle button
-	triangleBmp.LoadBitmap(IDB_TRIANGLE_BMP);
-	shapeButton = (CButton*)GetDlgItem(BTN_TRIANGLE);
-	shapeButton->ModifyStyle(0, BS_BITMAP);
-	shapeButton->SetBitmap(triangleBmp);
-
-	// Setting hexagon button
-	hexagonBmp.LoadBitmap(IDB_HEXAGON_BMP);
-	shapeButton = (CButton*)GetDlgItem(BTN_HEXAGON);
-	shapeButton->ModifyStyle(0, BS_BITMAP);
-	shapeButton->SetBitmap(hexagonBmp);
-
-	// Setting line button
-	lineBmp.LoadBitmap(IDB_LINE_BMP);
-	shapeButton = (CButton*)GetDlgItem(BTN_LINE);
-	shapeButton->ModifyStyle(0, BS_BITMAP);
-	shapeButton->SetBitmap(lineBmp);
-
-	// Setting remove button
-	removeBmp.LoadBitmap(IDB_REMOVE_TOOL);
-	shapeButton = (CButton*)GetDlgItem(BTN_REMOVE);
-	shapeButton->ModifyStyle(0, BS_BITMAP);
-	shapeButton->SetBitmap(removeBmp);
+void CPaintMFCDlg::LoadBitmapToButton(int btnID, int bitmapID)
+{
+	CBitmap bitmap;
+	CButton* button;
+	bitmap.LoadBitmap(bitmapID);
+	button = (CButton*)GetDlgItem(btnID);
+	button->ModifyStyle(0, BS_BITMAP);
+	button->SetBitmap(bitmap);
 }
 
 void CPaintMFCDlg::InnerOnPaint()
@@ -271,7 +244,7 @@ void CPaintMFCDlg::OnLButtonUp(UINT nFlags, CPoint point)
 			return;
 		}
 
-		// save the figure in data array
+		// save the figure
 		_shapes.push_back(_currentShapeDraw);
 		Invalidate();
 	}
@@ -309,25 +282,6 @@ void CPaintMFCDlg::OnMouseMove(UINT nFlags, CPoint point)
 		dc.SelectObject(oldPen);
 		dc.SetROP2(R2_COPYPEN);
 	}
-	/*else if (_drawMode == PAINT_TOOL::REMOVE)
-	{
-		RECT r;
-		int x, y;
-		int xx, yy;
-		xx = _TLX.x, yy = _TLX.y;
-		_TLX = point;
-		x = (_TLX.x - xx);
-		y = (_TLX.y - yy);
-		_shapes[chosenFigure]->setX1(_shapes[chosenFigure]->getX1() + x);
-		_shapes[chosenFigure]->setY1(_shapes[chosenFigure]->getY1() + y);
-		_shapes[chosenFigure]->setX2(_shapes[chosenFigure]->getX2() + x);
-		_shapes[chosenFigure]->setY2(_shapes[chosenFigure]->getY2() + y);
-		r.left = min(_shapes[chosenFigure]->getX1(), _shapes[chosenFigure]->getX2()) - 50;
-		r.right = max(_shapes[chosenFigure]->getX1(), _shapes[chosenFigure]->getX2()) + 50;
-		r.top = min(_shapes[chosenFigure]->getY1(), _shapes[chosenFigure]->getY2()) - 50;
-		r.bottom = max(_shapes[chosenFigure]->getY1(), _shapes[chosenFigure]->getY2()) + 50;
-		InvalidateRect(&r);
-	}*/
 
 	CDialogEx::OnMouseMove(nFlags, point);
 }
@@ -360,7 +314,7 @@ void CPaintMFCDlg::OnChooseHexagonClicked()
 	_isMousePressed = false;
 }
 
-void CPaintMFCDlg::OnBnClickedLine()
+void CPaintMFCDlg::OnChooseLineClicked()
 {
 	_drawMode = PAINT_TOOL::DRAW;
 	_chosenShapeType = FIGURES::LINE;
@@ -388,13 +342,14 @@ const string STATE_FILE_NAME = "savedState.json";
 
 void CPaintMFCDlg::OnSaveClicked()
 {
+	// Serialize all shapes to json array, and put it on file stream.	
 	vector<json> figuresAsJsons(_shapes.size());
 	std::transform(_shapes.begin(), _shapes.end(),
 		figuresAsJsons.begin(), [](Figure* figure) -> json { return figure->toJson(); });
 
 	std::remove(STATE_FILE_NAME.c_str());
 	ofstream o(STATE_FILE_NAME);
-	o << std::setw(4) << figuresAsJsons << std::endl; // write pretty json to the file
+	o << std::setw(4) << figuresAsJsons << std::endl; // write 'pretty' json to the file
 	o.close();
 }
 
@@ -421,14 +376,14 @@ void CPaintMFCDlg::OnLoadClicked()
 	Invalidate();
 }
 
-void CPaintMFCDlg::OnBnClickedClear()
+void CPaintMFCDlg::OnClearClicked()
 {
 	_shapes.clear();
 	_temp.clear();
 	Invalidate();
 }
 
-void CPaintMFCDlg::OnBnClickedRedo()
+void CPaintMFCDlg::OnRedoClicked()
 {
 	if (!_temp.empty())
 	{
@@ -439,7 +394,7 @@ void CPaintMFCDlg::OnBnClickedRedo()
 	}
 }
 
-void CPaintMFCDlg::OnBnClickedUndo()
+void CPaintMFCDlg::OnUndoClicked()
 {
 	if (!_shapes.empty())
 	{

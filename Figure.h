@@ -53,33 +53,9 @@ namespace shapes
 
 		virtual void draw(CDC* displayContext) const = 0;
 
-		virtual json toJson() const
-		{
-			json figure;
-			figure["x1"] = getX1();
-			figure["y1"] = getY1();
-			figure["x2"] = getX2();
-			figure["y2"] = getY2();
-			figure["penWidth"] = getPenWidth();
-			figure["color"] = getColor();
-			figure["fillColor"] = getFillColor();
+		virtual json toJson() const;
 
-			return figure;
-		}
-
-		virtual bool isContains(const POINT& point)
-		{
-			const auto leftX = min(getX1(), getX2());
-			const auto rightX = max(getX1(), getX2());
-			const auto topX = max(getY1(), getY2());
-			const auto bottomX = min(getY1(), getY2());
-
-			if (point.x >= leftX && point.x <= rightX && point.y <= topX && point.y >= bottomX) {
-				return true;
-			}
-
-			return false;
-		}
+		virtual bool isContains(const POINT& point);
 	};
 
 }

@@ -57,7 +57,7 @@ protected:
 	afx_msg void OnSysCommand(UINT nID, LPARAM lParam);	
 	void OnPaint();
 	afx_msg HCURSOR OnQueryDragIcon();
-	DECLARE_MESSAGE_MAP()
+DECLARE_MESSAGE_MAP()
 
 	CMFCColorButton borderColorControl;
 	CComboBox borderWeightControl;
@@ -65,11 +65,12 @@ protected:
 private:
 	void InnerOnPaint();
 	void InnerInit();
+	void LoadBitmapToButton(int btnID, int bitmapID);
 public:
 	afx_msg void OnChooseRectangleClicked();
 	afx_msg void OnChooseEllipseClicked();
 	afx_msg void OnChooseTriangleClicked();
-	afx_msg void OnBnClickedLine();
+	afx_msg void OnChooseLineClicked();
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
@@ -78,9 +79,9 @@ public:
 	afx_msg void OnFillColorChanged();
 	afx_msg void OnSaveClicked();
 	afx_msg void OnLoadClicked();
-	afx_msg void OnBnClickedUndo();
-	afx_msg void OnBnClickedRedo();
-	afx_msg void OnBnClickedClear();
+	afx_msg void OnUndoClicked();
+	afx_msg void OnRedoClicked();
+	afx_msg void OnClearClicked();
 	afx_msg void OnChooseHexagonClicked();	
 	afx_msg void OnRemoveToolClicked();
 };

@@ -33,9 +33,6 @@
     <ClInclude Include="pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Color.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ShapesFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -125,15 +122,6 @@
     <Image Include="res\PaintMFC.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="res\rectangle.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\line.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\rectangle.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="res\ellipse.bmp">
       <Filter>Resource Files</Filter>
     </Image>
@@ -144,9 +132,6 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="res\triangle.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\bitmap1.bmp">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="res\hexagon.bmp">
