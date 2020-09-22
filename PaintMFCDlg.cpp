@@ -202,6 +202,7 @@ void CPaintMFCDlg::InnerInit() {
 	LoadBitmapToButton(ID_REDO, IDB_REDO_BMP);
 	LoadBitmapToButton(ID_UNDO, IDB_UNDO_BMP);
 	LoadBitmapToButton(BTN_REMOVE, IDB_REMOVE_TOOL);
+	LoadBitmapToButton(BTN_MOVE, IDB_MOVE_BMP);
 	LoadBitmapToButton(BTN_LINE, IDB_LINE_BMP);
 	LoadBitmapToButton(BTN_HEXAGON, IDB_HEXAGON_BMP);
 	LoadBitmapToButton(BTN_TRIANGLE, IDB_TRIANGLE_BMP);

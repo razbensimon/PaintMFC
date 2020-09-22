@@ -233,6 +233,7 @@
     <Image Include="res\hexagon.bmp" />
     <Image Include="res\line.bmp" />
     <Image Include="res\load.bmp" />
+    <Image Include="res\move.bmp" />
     <Image Include="res\PaintMFC.ico" />
     <Image Include="res\rect.bmp" />
     <Image Include="res\redo.bmp" />

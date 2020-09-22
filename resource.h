@@ -20,6 +20,8 @@
 #define IDB_LOAD_BMP                    151
 #define IDB_BITMAP1                     152
 #define IDB_SAVE_BMP                    152
+#define IDB_BITMAP2                     153
+#define IDB_MOVE_BMP                    153
 #define BTN_RECT2                       1001
 #define BTN_ELLIPSE                     1002
 #define BTN_ELLIPSE2                    1003
@@ -45,7 +47,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        153
+#define _APS_NEXT_RESOURCE_VALUE        154
 #define _APS_NEXT_COMMAND_VALUE         32771
 #define _APS_NEXT_CONTROL_VALUE         1023
 #define _APS_NEXT_SYMED_VALUE           101

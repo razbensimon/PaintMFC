@@ -155,5 +155,8 @@
     <Image Include="res\save.bmp">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="res\move.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
