@@ -20,19 +20,17 @@ private:
 	int _penWidth;
 	COLORREF _penColor;
 	COLORREF _fillColor;
-	FIGURES _chosenShapeType;
-	Figure* _currentShapeDraw;
+	FIGURES _chosenShape;
+	Figure* _lastShape;
+	Figure* _movedShape;
 
 	vector<Figure*> _shapes;
 	vector<Figure*> _temp;  // for Redo and Undo
 
-	bool _isMousePressed;
-	PAINT_TOOL _drawMode;
-	
-	CPoint _startP;
-	CPoint _endP;
-	//CPoint _TLX; //TOP LEFT Point,for Proportion to moving
-
+	bool _isPressingMouse;
+	PAINT_TOOL _paintTool;	
+	CPoint _startPoint;
+	CPoint _endPoint;
 
 /* MFC Generated Code: */
 // Construction
@@ -84,4 +82,5 @@ public:
 	afx_msg void OnClearClicked();
 	afx_msg void OnChooseHexagonClicked();	
 	afx_msg void OnRemoveToolClicked();
+	afx_msg void OnMoveToolClicked();
 };

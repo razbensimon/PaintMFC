@@ -4,5 +4,6 @@ enum class PAINT_TOOL
 {
 	POINTER = 0,
 	DRAW,
-	REMOVE
+	REMOVE,
+	MOVE
 };

@@ -61,10 +61,10 @@ CPaintMFCDlg::CPaintMFCDlg(CWnd* pParent /*=nullptr*/)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 
-	_chosenShapeType = FIGURES::RECTANGLE;
-	_currentShapeDraw = NULL;
-	_drawMode = PAINT_TOOL::POINTER;
-	_isMousePressed = false;
+	_chosenShape = FIGURES::RECTANGLE;
+	_lastShape = NULL;
+	_paintTool = PAINT_TOOL::POINTER;
+	_isPressingMouse = false;
 	_fillColor = RGB(255, 255, 255); // WHITE
 	_penColor = RGB(0, 0, 0); // BLACK
 	_penWidth = 1;
@@ -99,6 +99,7 @@ BEGIN_MESSAGE_MAP(CPaintMFCDlg, CDialogEx)
 	ON_BN_CLICKED(BTN_LINE, &CPaintMFCDlg::OnChooseLineClicked)
 	ON_BN_CLICKED(BTN_HEXAGON, &CPaintMFCDlg::OnChooseHexagonClicked)
 	ON_BN_CLICKED(BTN_REMOVE, &CPaintMFCDlg::OnRemoveToolClicked)
+	ON_BN_CLICKED(BTN_MOVE, &CPaintMFCDlg::OnMoveToolClicked)
 END_MESSAGE_MAP()
 
 
@@ -205,7 +206,7 @@ void CPaintMFCDlg::InnerInit() {
 	LoadBitmapToButton(BTN_HEXAGON, IDB_HEXAGON_BMP);
 	LoadBitmapToButton(BTN_TRIANGLE, IDB_TRIANGLE_BMP);
 	LoadBitmapToButton(BTN_ELLIPSE, IDB_ELLIPSE_BMP);
-	LoadBitmapToButton(BTN_RECT2, IDB_RECT_BMP);	
+	LoadBitmapToButton(BTN_RECT2, IDB_RECT_BMP);
 }
 
 void CPaintMFCDlg::LoadBitmapToButton(int btnID, int bitmapID)
@@ -229,10 +230,20 @@ void CPaintMFCDlg::InnerOnPaint()
 void CPaintMFCDlg::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	// save start cursor point
-	_endP = _startP = point;
-	_isMousePressed = true;
+	_endPoint = _startPoint = point;
+	_isPressingMouse = true;
 
-	_currentShapeDraw = ShapesFactory::createShape(_chosenShapeType, point.x, point.y, point.x, point.y, _penWidth, _penColor, _fillColor);
+	if (_paintTool == PAINT_TOOL::DRAW) {
+		_lastShape = ShapesFactory::createShape(_chosenShape, point.x, point.y, point.x, point.y, _penWidth, _penColor, _fillColor);
+	}
+	else if (_paintTool == PAINT_TOOL::MOVE) {
+		for (auto iterator = _shapes.rbegin(); iterator != _shapes.rend(); ++iterator) {
+			if ((*iterator)->isContains(point)) {
+				_movedShape = *iterator;
+				break;
+			}
+		}
+	}
 
 	CDialogEx::OnLButtonDown(nFlags, point);
 }
@@ -240,20 +251,20 @@ void CPaintMFCDlg::OnLButtonDown(UINT nFlags, CPoint point)
 void CPaintMFCDlg::OnLButtonUp(UINT nFlags, CPoint point)
 {
 	// save end cursor point
-	_endP = point;
-	_isMousePressed = false;
+	_endPoint = point;
+	_isPressingMouse = false;
 
 
-	if (_drawMode == PAINT_TOOL::DRAW) {
-		if (_startP == _endP) {
+	if (_paintTool == PAINT_TOOL::DRAW) {
+		if (_startPoint == _endPoint) {
 			return;
 		}
 
 		// save the figure
-		_shapes.push_back(_currentShapeDraw);
+		_shapes.push_back(_lastShape);
 		Invalidate();
 	}
-	else if (_drawMode == PAINT_TOOL::REMOVE) {
+	else if (_paintTool == PAINT_TOOL::REMOVE) {
 		for (auto iterator = _shapes.rbegin(); iterator != _shapes.rend(); ++iterator) {
 			if ((*iterator)->isContains(point)) {
 				_shapes.erase((iterator + 1).base());
@@ -262,30 +273,58 @@ void CPaintMFCDlg::OnLButtonUp(UINT nFlags, CPoint point)
 			}
 		}
 	}
+	else if (_paintTool == PAINT_TOOL::MOVE) {
+		_movedShape = nullptr;
+	}
 }
 
 void CPaintMFCDlg::OnMouseMove(UINT nFlags, CPoint point)
 {
-	if (!_isMousePressed)
+	if (!_isPressingMouse)
 		return;
 
-	if (_drawMode == PAINT_TOOL::DRAW)
+	if (_paintTool == PAINT_TOOL::DRAW)
 	{
 		CClientDC dc(this);
-		CPen pen(PS_SOLID, _penWidth, _penColor);
-		CPen* oldPen;
-		oldPen = dc.SelectObject(&pen);
+		dc.SetROP2(R2_NOTXORPEN); // draw the invert color shape for "removing affect"
+		_lastShape->draw(&dc);
 
-		dc.SetROP2(R2_NOTXORPEN);
-		_currentShapeDraw->draw(&dc);
+		_endPoint = point; // update and draw
+		_lastShape->setX2(point.x);
+		_lastShape->setY2(point.y);
+		_lastShape->draw(&dc);
 
-		_endP = point; // update
-		_currentShapeDraw->setX2(point.x);
-		_currentShapeDraw->setY2(point.y);
-		_currentShapeDraw->draw(&dc);
+		dc.SetROP2(R2_COPYPEN); // return to default 
+	}
+	else if (_paintTool == PAINT_TOOL::MOVE) {
+		if (!_movedShape)
+			return;
 
-		dc.SelectObject(oldPen);
-		dc.SetROP2(R2_COPYPEN);
+		const auto leftX = min(_movedShape->getX1(), _movedShape->getX2());
+		const auto rightX = max(_movedShape->getX1(), _movedShape->getX2());
+		const auto topY = max(_movedShape->getY1(), _movedShape->getY2());
+		const auto bottomY = min(_movedShape->getY1(), _movedShape->getY2());
+		
+		const int deltaX = rightX - point.x;
+		const int deltaY = topY - point.y;
+
+		const auto oldx1 = _movedShape->getX1();
+		const auto oldy1 = _movedShape->getY1();
+		const auto oldx2 = _movedShape->getX2();
+		const auto oldy2 = _movedShape->getY2();
+
+		_movedShape->setX1(_movedShape->getX1() - deltaX);
+		_movedShape->setY1(_movedShape->getY1() - deltaY);
+		_movedShape->setX2(_movedShape->getX2() - deltaX);
+		_movedShape->setY2(_movedShape->getY2() - deltaY);
+
+		/*RECT rect;
+		rect.bottom = ;
+		rect.top = ;
+		rect.left = ;
+		rect.right = ;
+		InvalidateRect(&rect);*/
+		Invalidate();
 	}
 
 	CDialogEx::OnMouseMove(nFlags, point);
@@ -293,37 +332,37 @@ void CPaintMFCDlg::OnMouseMove(UINT nFlags, CPoint point)
 
 void CPaintMFCDlg::OnChooseRectangleClicked()
 {
-	_drawMode = PAINT_TOOL::DRAW;
-	_chosenShapeType = FIGURES::RECTANGLE;
-	_isMousePressed = false;
+	_paintTool = PAINT_TOOL::DRAW;
+	_chosenShape = FIGURES::RECTANGLE;
+	_isPressingMouse = false;
 }
 
 void CPaintMFCDlg::OnChooseEllipseClicked()
 {
-	_drawMode = PAINT_TOOL::DRAW;
-	_chosenShapeType = FIGURES::ELLIPSE;
-	_isMousePressed = false;
+	_paintTool = PAINT_TOOL::DRAW;
+	_chosenShape = FIGURES::ELLIPSE;
+	_isPressingMouse = false;
 }
 
 void CPaintMFCDlg::OnChooseTriangleClicked()
 {
-	_drawMode = PAINT_TOOL::DRAW;
-	_chosenShapeType = FIGURES::TRIANGLE;
-	_isMousePressed = false;
+	_paintTool = PAINT_TOOL::DRAW;
+	_chosenShape = FIGURES::TRIANGLE;
+	_isPressingMouse = false;
 }
 
 void CPaintMFCDlg::OnChooseHexagonClicked()
 {
-	_drawMode = PAINT_TOOL::DRAW;
-	_chosenShapeType = FIGURES::HEXAGON;
-	_isMousePressed = false;
+	_paintTool = PAINT_TOOL::DRAW;
+	_chosenShape = FIGURES::HEXAGON;
+	_isPressingMouse = false;
 }
 
 void CPaintMFCDlg::OnChooseLineClicked()
 {
-	_drawMode = PAINT_TOOL::DRAW;
-	_chosenShapeType = FIGURES::LINE;
-	_isMousePressed = false;
+	_paintTool = PAINT_TOOL::DRAW;
+	_chosenShape = FIGURES::LINE;
+	_isPressingMouse = false;
 }
 
 void CPaintMFCDlg::OnPenColorChanged()
@@ -412,6 +451,12 @@ void CPaintMFCDlg::OnUndoClicked()
 
 void CPaintMFCDlg::OnRemoveToolClicked()
 {
-	_drawMode = PAINT_TOOL::REMOVE;
-	_isMousePressed = false;
+	_paintTool = PAINT_TOOL::REMOVE;
+	_isPressingMouse = false;
+}
+
+void CPaintMFCDlg::OnMoveToolClicked()
+{
+	_paintTool = PAINT_TOOL::MOVE;
+	_isPressingMouse = false;
 }

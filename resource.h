@@ -38,6 +38,8 @@
 #define LOAD_BTN                        1020
 #define BTN_HEXAGON                     1021
 #define BTN_REMOVE                      1022
+#define BTN_REMOVE2                     1023
+#define BTN_MOVE                        1023
 
 // Next default values for new objects
 // 
