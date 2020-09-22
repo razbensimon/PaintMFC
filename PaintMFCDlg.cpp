@@ -69,7 +69,7 @@ CPaintMFCDlg::CPaintMFCDlg(CWnd* pParent /*=nullptr*/)
 	_fillColor = RGB(255, 255, 255); // WHITE
 	_penColor = RGB(0, 0, 0); // BLACK
 	_penWidth = 1;
-	_movedShape = NULL;	
+	_movedShape = NULL;
 }
 
 void CPaintMFCDlg::DoDataExchange(CDataExchange* pDX)
@@ -305,27 +305,28 @@ void CPaintMFCDlg::OnMouseMove(UINT nFlags, CPoint point)
 	}
 	else if (_paintTool == PAINT_TOOL::MOVE) {
 		if (!_movedShape)
-			return;			
+			return;
 
-		const auto oldRect =_movedShape->getRect();
-		
+		const auto oldRect = _movedShape->getRect();
+
 		const int deltaX = _lastMousePoint.x - point.x;
-		const int deltaY = _lastMousePoint.y - point.y;				
+		const int deltaY = _lastMousePoint.y - point.y;
 		_movedShape->setX1(_movedShape->getX1() - deltaX);
 		_movedShape->setY1(_movedShape->getY1() - deltaY);
 		_movedShape->setX2(_movedShape->getX2() - deltaX);
 		_movedShape->setY2(_movedShape->getY2() - deltaY);
-				
+
 		_lastMousePoint = point;
 		const auto currentRect = _movedShape->getRect();
 
 		// Smart rendering:
 		RECT rect; // merge rectangles
-		rect.left = min(oldRect.left, currentRect.left);
-		rect.right = max(oldRect.right, currentRect.right);
-		rect.top = min(oldRect.top, currentRect.top);
-		rect.bottom = max(oldRect.bottom, currentRect.bottom);		
-		InvalidateRect(&rect);		
+		int buffer = _movedShape->getPenWidth() + 1;
+		rect.left = min(oldRect.left, currentRect.left) - buffer;
+		rect.right = max(oldRect.right, currentRect.right) + buffer;
+		rect.top = min(oldRect.top, currentRect.top) - buffer;
+		rect.bottom = max(oldRect.bottom, currentRect.bottom) + buffer;
+		InvalidateRect(&rect);
 	}
 
 	CDialogEx::OnMouseMove(nFlags, point);
