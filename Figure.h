@@ -56,6 +56,8 @@ namespace shapes
 		virtual json toJson() const;
 
 		virtual bool isContains(const POINT& point);
+		
+		virtual RECT getRect() const;
 	};
 
 }

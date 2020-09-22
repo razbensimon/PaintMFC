@@ -31,3 +31,18 @@ bool Figure::isContains(const POINT& point)
 
 	return false;
 }
+
+RECT Figure::getRect() const
+{
+	const auto leftX = min(getX1(), getX2());
+	const auto rightX = max(getX1(), getX2());
+	const auto topY = min(getY1(), getY2()); // top and bottom are reversed because top-left is (0,0)
+	const auto bottomY = max(getY1(), getY2());
+
+	RECT rect;
+	rect.left = leftX;
+	rect.right = rightX;
+	rect.top = topY;
+	rect.bottom = bottomY;	
+	return rect;
+}

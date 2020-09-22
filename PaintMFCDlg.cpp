@@ -61,6 +61,7 @@ CPaintMFCDlg::CPaintMFCDlg(CWnd* pParent /*=nullptr*/)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 
+	// OUR CODE:
 	_chosenShape = FIGURES::RECTANGLE;
 	_lastShape = NULL;
 	_paintTool = PAINT_TOOL::POINTER;
@@ -68,6 +69,7 @@ CPaintMFCDlg::CPaintMFCDlg(CWnd* pParent /*=nullptr*/)
 	_fillColor = RGB(255, 255, 255); // WHITE
 	_penColor = RGB(0, 0, 0); // BLACK
 	_penWidth = 1;
+	_movedShape = NULL;	
 }
 
 void CPaintMFCDlg::DoDataExchange(CDataExchange* pDX)
@@ -132,7 +134,7 @@ BOOL CPaintMFCDlg::OnInitDialog()
 	SetIcon(m_hIcon, TRUE);			// Set big icon
 	SetIcon(m_hIcon, FALSE);		// Set small icon
 
-	InnerInit();
+	InnerInit(); // OUR CODE
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -176,7 +178,7 @@ void CPaintMFCDlg::OnPaint()
 	}
 	else
 	{
-		this->InnerOnPaint();
+		this->InnerOnPaint(); // OUR CODE
 		CDialogEx::OnPaint();
 	}
 }
@@ -189,6 +191,7 @@ HCURSOR CPaintMFCDlg::OnQueryDragIcon()
 }
 
 /* #### Our CODE: ### */
+
 void CPaintMFCDlg::InnerInit() {
 	SetWindowText(_T("Paint App by Raz & Lior"));
 	borderWeightControl.SetCurSel(0);  // Setting default border weight to 1	
@@ -302,29 +305,27 @@ void CPaintMFCDlg::OnMouseMove(UINT nFlags, CPoint point)
 	}
 	else if (_paintTool == PAINT_TOOL::MOVE) {
 		if (!_movedShape)
-			return;
+			return;			
 
-		//const auto leftX = min(_movedShape->getX1(), _movedShape->getX2());
-		//const auto rightX = max(_movedShape->getX1(), _movedShape->getX2());
-		//const auto topY = max(_movedShape->getY1(), _movedShape->getY2());
-		//const auto bottomY = min(_movedShape->getY1(), _movedShape->getY2());
-	
+		const auto oldRect =_movedShape->getRect();
+		
 		const int deltaX = _lastMousePoint.x - point.x;
-		const int deltaY = _lastMousePoint.y - point.y;
-				
+		const int deltaY = _lastMousePoint.y - point.y;				
 		_movedShape->setX1(_movedShape->getX1() - deltaX);
 		_movedShape->setY1(_movedShape->getY1() - deltaY);
 		_movedShape->setX2(_movedShape->getX2() - deltaX);
 		_movedShape->setY2(_movedShape->getY2() - deltaY);
 				
 		_lastMousePoint = point;
-		/*RECT rect;
-		rect.bottom = ;
-		rect.top = ;
-		rect.left = ;
-		rect.right = ;
-		InvalidateRect(&rect);*/
-		Invalidate();
+		const auto currentRect = _movedShape->getRect();
+
+		// Smart rendering:
+		RECT rect; // merge rectangles
+		rect.left = min(oldRect.left, currentRect.left);
+		rect.right = max(oldRect.right, currentRect.right);
+		rect.top = min(oldRect.top, currentRect.top);
+		rect.bottom = max(oldRect.bottom, currentRect.bottom);		
+		InvalidateRect(&rect);		
 	}
 
 	CDialogEx::OnMouseMove(nFlags, point);
