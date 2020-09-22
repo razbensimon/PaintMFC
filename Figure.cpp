@@ -19,15 +19,10 @@ json Figure::toJson() const
 
 bool Figure::isContains(const POINT& point)
 {
-	const auto leftX = min(getX1(), getX2());
-	const auto rightX = max(getX1(), getX2());
-	const auto topY = max(getY1(), getY2());
-	const auto bottomY = min(getY1(), getY2());
-
-	if (point.x >= leftX && point.x <= rightX && point.y <= topY && point.y >= bottomY)
-	{
-		return true;
-	}
+	const auto rectangle = this->getRect();
+	
+	if (point.x >= rectangle.left && point.x <= rectangle.right && point.y <= rectangle.bottom && point.y >= rectangle.top)
+		return true;	
 
 	return false;
 }
