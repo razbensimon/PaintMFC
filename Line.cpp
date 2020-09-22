@@ -20,3 +20,13 @@ json Line::toJson() const
 	figure["type"] = FIGURES::LINE;
 	return  figure;
 }
+
+bool Line::isContains(const POINT& point) {
+	double m = double(this->getY2() - this->getY1()) / double(this->getX2() - this->getX1());
+	double left = double(point.y - this->getY1());
+	double right = m * double(point.x - this->getX1());
+	if (abs(left - right) <= 3)
+		return true;
+	else
+		return false;
+}

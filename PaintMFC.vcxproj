@@ -228,13 +228,18 @@
     <None Include="res\PaintMFC.rc2" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="res\blank.bmp" />
     <Image Include="res\ellipse.bmp" />
     <Image Include="res\hexagon.bmp" />
     <Image Include="res\line.bmp" />
+    <Image Include="res\load.bmp" />
     <Image Include="res\PaintMFC.ico" />
     <Image Include="res\rect.bmp" />
+    <Image Include="res\redo.bmp" />
     <Image Include="res\remove.bmp" />
+    <Image Include="res\save.bmp" />
     <Image Include="res\triangle.bmp" />
+    <Image Include="res\undo.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

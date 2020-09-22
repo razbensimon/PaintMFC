@@ -140,5 +140,20 @@
     <Image Include="res\remove.bmp">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="res\blank.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\undo.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\redo.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\load.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\save.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

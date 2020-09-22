@@ -195,6 +195,11 @@ void CPaintMFCDlg::InnerInit() {
 	fillColorControl.SetColor(_fillColor); // Setting default fill color to White	
 
 	// Setting bitmaps to buttons
+	LoadBitmapToButton(SAVE_BTN, IDB_SAVE_BMP);
+	LoadBitmapToButton(LOAD_BTN, IDB_LOAD_BMP);
+	LoadBitmapToButton(ID_CLEAR, IDB_BLANK_BMP);
+	LoadBitmapToButton(ID_REDO, IDB_REDO_BMP);
+	LoadBitmapToButton(ID_UNDO, IDB_UNDO_BMP);
 	LoadBitmapToButton(BTN_REMOVE, IDB_REMOVE_TOOL);
 	LoadBitmapToButton(BTN_LINE, IDB_LINE_BMP);
 	LoadBitmapToButton(BTN_HEXAGON, IDB_HEXAGON_BMP);
