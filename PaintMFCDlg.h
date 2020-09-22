@@ -31,6 +31,7 @@ private:
 	PAINT_TOOL _paintTool;	
 	CPoint _startPoint;
 	CPoint _endPoint;
+	CPoint _lastMousePoint; // for moving shape
 
 /* MFC Generated Code: */
 // Construction

@@ -238,6 +238,7 @@ void CPaintMFCDlg::OnLButtonDown(UINT nFlags, CPoint point)
 		_lastShape = ShapesFactory::createShape(_chosenShape, point.x, point.y, point.x, point.y, _penWidth, _penColor, _fillColor);
 	}
 	else if (_paintTool == PAINT_TOOL::MOVE) {
+		_lastMousePoint = point;
 		for (auto iterator = _shapes.rbegin(); iterator != _shapes.rend(); ++iterator) {
 			if ((*iterator)->isContains(point)) {
 				_movedShape = *iterator;
@@ -275,7 +276,9 @@ void CPaintMFCDlg::OnLButtonUp(UINT nFlags, CPoint point)
 		}
 	}
 	else if (_paintTool == PAINT_TOOL::MOVE) {
-		_movedShape = nullptr;
+		// cleaning
+		_movedShape = NULL;
+		_lastMousePoint = NULL;
 	}
 }
 
@@ -301,24 +304,20 @@ void CPaintMFCDlg::OnMouseMove(UINT nFlags, CPoint point)
 		if (!_movedShape)
 			return;
 
-		const auto leftX = min(_movedShape->getX1(), _movedShape->getX2());
-		const auto rightX = max(_movedShape->getX1(), _movedShape->getX2());
-		const auto topY = max(_movedShape->getY1(), _movedShape->getY2());
-		const auto bottomY = min(_movedShape->getY1(), _movedShape->getY2());
-		
-		const int deltaX = rightX - point.x;
-		const int deltaY = topY - point.y;
-
-		const auto oldx1 = _movedShape->getX1();
-		const auto oldy1 = _movedShape->getY1();
-		const auto oldx2 = _movedShape->getX2();
-		const auto oldy2 = _movedShape->getY2();
-
+		//const auto leftX = min(_movedShape->getX1(), _movedShape->getX2());
+		//const auto rightX = max(_movedShape->getX1(), _movedShape->getX2());
+		//const auto topY = max(_movedShape->getY1(), _movedShape->getY2());
+		//const auto bottomY = min(_movedShape->getY1(), _movedShape->getY2());
+	
+		const int deltaX = _lastMousePoint.x - point.x;
+		const int deltaY = _lastMousePoint.y - point.y;
+				
 		_movedShape->setX1(_movedShape->getX1() - deltaX);
 		_movedShape->setY1(_movedShape->getY1() - deltaY);
 		_movedShape->setX2(_movedShape->getX2() - deltaX);
 		_movedShape->setY2(_movedShape->getY2() - deltaY);
-
+				
+		_lastMousePoint = point;
 		/*RECT rect;
 		rect.bottom = ;
 		rect.top = ;
