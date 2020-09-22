@@ -22,11 +22,11 @@ json Line::toJson() const
 }
 
 bool Line::isContains(const POINT& point) {
-	double m = double(this->getY2() - this->getY1()) / double(this->getX2() - this->getX1());
-	double left = double(point.y - this->getY1());
-	double right = m * double(point.x - this->getX1());
-	if (abs(left - right) <= 3)
-		return true;
-	else
-		return false;
+	const double m = (getY2() - getY1()) / double(getX2() - getX1());
+	const double n = getY1() - m * getX1();
+	const double distance = abs((m * point.x - point.y + n) / sqrt(m * m + 1));
+		
+	if (distance <= getPenWidth())
+		return Figure::isContains(point);
+	return false;
 }
